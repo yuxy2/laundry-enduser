@@ -11,7 +11,7 @@ function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const rawCity = searchParams.get("city");
-  const initialCity = rawCity || "Jakarta";
+  const initialCity = rawCity || "Yogyakarta";
 
   const [city, setCity] = useState(initialCity);
   const [searchInput, setSearchInput] = useState(initialCity);
@@ -72,7 +72,7 @@ function SearchContent() {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-gray-100/70 border border-transparent focus:border-blue-500 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all font-medium text-sm"
-                placeholder="Cari Kota... (Misal: Jakarta, Bandung)"
+                placeholder="Cari Kota... (Misal: Yogyakarta, Bandung)"
                 required
               />
             </form>

@@ -88,7 +88,7 @@ export default function RegisterPage() {
                 <Shirt className="w-5 h-5" />
               </div>
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-600">
-                WashEase
+                E-laundry
               </span>
             </Link>
           </div>

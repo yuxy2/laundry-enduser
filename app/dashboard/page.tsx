@@ -16,7 +16,7 @@ export default function DashboardPage() {
   // States for API data
   const [activeOrders, setActiveOrders] = useState<any[]>([]);
   const [recommendedPartners, setRecommendedPartners] = useState<any[]>([]);
-  const [searchCity, setSearchCity] = useState("Jakarta"); // Default city for recommendations
+  const [searchCity, setSearchCity] = useState("Yogyakarta"); // Default city for recommendations
 
   useEffect(() => {
     // Authentication Check
@@ -43,7 +43,7 @@ export default function DashboardPage() {
         
         // Parallel API Requests:
         // 1. Fetch Orders (Needs Auth)
-        // 2. Fetch Laundries locally in Jakarta (Public API)
+        // 2. Fetch Laundries locally in Yogyakarta (Public API)
         const [ordersRes, laundriesRes] = await Promise.all([
           fetch(`${apiUrl}/api/order`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -125,7 +125,7 @@ export default function DashboardPage() {
                 <Shirt className="w-4 h-4" />
               </div>
               <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-600 hidden sm:block">
-                WashEase
+                E-laundry
               </span>
             </div>
             
@@ -168,7 +168,7 @@ export default function DashboardPage() {
             value={searchCity}
             onChange={(e) => setSearchCity(e.target.value)}
             className="w-full pl-12 pr-24 py-4 bg-white border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium shadow-sm hover:shadow-md text-base"
-            placeholder="Cari Kota... (misal: Jakarta, Bandung)"
+            placeholder="Cari Kota... (misal: Yogyakarta, Bandung)"
             required
           />
           <button type="submit" className="absolute inset-y-2 right-2 px-5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm">
