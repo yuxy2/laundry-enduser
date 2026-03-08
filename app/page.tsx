@@ -2,17 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, MapPin, Truck, ShieldCheck, Shirt, Clock, Sparkles, Star, CheckCircle2 } from "lucide-react";
+import { Diamond, Droplets, Wind, Shirt, Scissors, Phone, Mail, MapPin } from "lucide-react";
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("userToken")) {
-      setIsLoggedIn(true);
-    }
-    
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -22,285 +17,255 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-slate-50 text-slate-900 font-sans min-h-screen selection:bg-blue-300 selection:text-blue-900 overflow-x-hidden">
-      {/* Background Ambient Layers */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/20 rounded-full blur-[120px] animate-blob"></div>
-        <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-indigo-400/20 rounded-full blur-[120px] animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-[-20%] left-[20%] w-[50%] h-[50%] bg-cyan-400/20 rounded-full blur-[120px] animate-blob animation-delay-4000"></div>
-      </div>
-
+    <div className="bg-background text-foreground font-sans min-h-screen selection:bg-gold selection:text-background overflow-x-hidden">
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm py-3" : "bg-transparent py-5"}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform duration-300">
-                <Shirt className="w-5 h-5" />
-              </div>
-              <span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-600">
-                E-laundry
-              </span>
+      <nav className={`fixed w-full z-50 transition-all duration-500 border-b border-white/5 ${scrolled ? "bg-background/95 backdrop-blur-md py-4 shadow-2xl shadow-black/50" : "bg-transparent py-6"}`}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex justify-between items-center text-xs font-medium tracking-widest text-gray-300">
+            <Link href="/" className="flex-shrink-0 flex items-center gap-3 text-gold hover:text-white transition-colors">
+              <Diamond className="w-5 h-5 fill-current" />
+              <span className="text-xl font-serif tracking-widest text-white">E-LAUNDRY</span>
             </Link>
-            <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
-              <div className="hidden md:flex gap-6 mr-4">
-                <Link href="#features" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Layanan</Link>
-                <Link href="#how-it-works" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Cara Kerja</Link>
-              </div>
-              
-              {isLoggedIn ? (
-                <Link href="/dashboard" className="text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-6 py-2.5 rounded-full transition-all duration-300 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5">
-                  Dashboard
-                </Link>
-              ) : (
-                <>
-                  <Link href="/login" className="text-sm font-bold text-slate-600 hover:text-blue-600 px-4 py-2 rounded-full hover:bg-slate-100 transition-all">
-                    Masuk
-                  </Link>
-                  <Link href="/register" className="text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-6 py-2.5 rounded-full transition-all duration-300 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5">
-                    Daftar
-                  </Link>
-                </>
-              )}
+            
+            <div className="hidden md:flex items-center gap-10">
+              <Link href="#services" className="hover:text-gold transition-colors hover:uppercase">Layanan</Link>
+              <Link href="#experience" className="hover:text-gold transition-colors hover:uppercase">Pengalaman</Link>
+              <Link href="#contacts" className="hover:text-gold transition-colors hover:uppercase">Kontak</Link>
+            </div>
+            
+            <div className="hidden lg:flex items-center gap-6">
+              <Link href="/login" className="hover:text-gold transition-colors">PORTAL PRIBADI</Link>
+              <Link href="/register" className="bg-gold text-background hover:bg-gold-hover px-6 py-3 transition-colors uppercase tracking-widest text-[10px] font-bold">
+                Pesan Layanan
+              </Link>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <main className="relative z-10 pt-32 pb-20 sm:pt-40 sm:pb-28 lg:pb-36 overflow-hidden min-h-[90vh] flex flex-col justify-center">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <main className="relative z-10 pt-40 pb-20 sm:pt-48 sm:pb-32 min-h-screen flex items-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full grid lg:grid-cols-2 gap-16 items-center">
           
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 border border-blue-100 backdrop-blur-sm mb-8 animate-[fade-in-up_1s_ease-out]">
-            <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
-            <span className="text-xs font-semibold text-blue-800 uppercase tracking-wider">Aplikasi Laundry #1 di Indonesia</span>
-          </div>
-
-          <h1 className="text-5xl font-extrabold tracking-tighter text-slate-900 sm:text-6xl md:text-7xl lg:text-[5rem] max-w-4xl mx-auto leading-[1.1] mb-2 animate-[fade-in-up_1s_ease-out_0.2s_both]">
-             Ucapkan Selamat Tinggal pada <br className="hidden sm:block"/>
-            <span className="relative inline-block mt-2">
-              <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500">
-                Cucian Menumpuk
-              </span>
-              <div className="absolute -bottom-2 left-0 w-full h-4 bg-blue-200/40 -z-10 rounded-full blur-sm"></div>
-            </span>
-          </h1>
-          
-          <p className="mt-8 text-lg sm:text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed animate-[fade-in-up_1s_ease-out_0.4s_both]">
-            Platform laundry on-demand premium. Pesan layanan antar-jemput, pantau cucian secara real-time, dan nikmati waktu luang Anda.
-          </p>
-          
-          <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-[fade-in-up_1s_ease-out_0.6s_both]">
-            <Link
-              href="/register"
-              className="group relative inline-flex justify-center items-center gap-2 py-4 px-10 text-base font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-full transition-all duration-300 shadow-xl shadow-slate-900/20 hover:shadow-slate-900/30 hover:-translate-y-1 w-full sm:w-auto"
-            >
-              Mulai Sekarang
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="#features"
-              className="group inline-flex justify-center items-center gap-2 py-4 px-10 text-base font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-full transition-all duration-300 shadow-sm hover:shadow-md w-full sm:w-auto hover:-translate-y-1"
-            >
-              Jelajahi Fitur
-            </Link>
-          </div>
-
-          {/* Social Proof Stats */}
-          <div className="mt-20 pt-10 border-t border-slate-200/60 flex flex-wrap justify-center gap-10 sm:gap-20 animate-[fade-in-up_1s_ease-out_0.8s_both]">
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-slate-900">10rb+</div>
-              <div className="text-sm font-medium text-slate-500 mt-1">Pengguna Aktif</div>
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-[1px] w-12 bg-gold"></div>
+              <span className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">Manajemen Pakaian Kustom</span>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-slate-900">500+</div>
-              <div className="text-sm font-medium text-slate-500 mt-1">Mitra Laundry</div>
+            
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-serif text-white leading-[1.1] mb-8">
+              Perawatan Sempurna, <br />
+              Privasi Mutlak
+            </h1>
+            
+            <p className="text-gray-400 text-lg sm:text-xl font-light leading-relaxed mb-12 max-w-lg">
+              Proses yang disempurnakan secara cermat untuk kualitas tanpa kompromi, disesuaikan untuk gaya hidup yang paling menuntut. Kami mengelola penampilam Anda dengan keanggunan, pelayanan prima, dan keahlian tertinggi.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-5">
+              <Link
+                href="/register"
+                className="inline-flex justify-center items-center bg-gold hover:bg-gold-hover text-background px-8 py-4 uppercase tracking-widest text-xs font-bold transition-all"
+              >
+                Jadwalkan Penjemputan
+              </Link>
+              <Link
+                href="#contacts"
+                className="inline-flex justify-center items-center border border-gray-600 hover:border-gold hover:text-gold text-white px-8 py-4 uppercase tracking-widest text-xs font-bold transition-all"
+              >
+                Hubungi Kami
+              </Link>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-slate-900">4.9/5</div>
-              <div className="flex gap-1 text-yellow-400 mt-1">
-                {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="w-4 h-4 fill-current" />)}
-              </div>
+          </div>
+          
+          <div className="relative w-full aspect-[4/5] lg:aspect-square max-h-[600px] ml-auto">
+            <div className="absolute inset-0 bg-white shadow-2xl shadow-black">
+              <img 
+                src="https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?q=80&w=1000&auto=format&fit=crop" 
+                alt="Crisp folded towels"
+                className="w-full h-full object-cover grayscale-[20%] contrast-125"
+              />
+            </div>
+            <div className="absolute -bottom-8 -right-8 bg-panel border-l-2 border-gold p-8 shadow-xl max-w-xs">
+              <p className="text-gold text-xs uppercase tracking-widest mb-2 font-semibold">Est. 2026</p>
+              <p className="text-white font-serif text-xl">Keunggulan Teknis</p>
             </div>
           </div>
         </div>
       </main>
 
-      {/* Features Section */}
-      <section id="features" className="relative z-10 py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-blue-600 font-semibold tracking-wide uppercase text-sm mb-3">Keunggulan Kami</h2>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-6">Layanan Bintang Lima Untuk Pakaian Anda</h3>
-            <p className="text-lg text-slate-600">Teknologi modern berpadu dengan ketelitian, menghadirkan pengalaman mencuci yang belum pernah Anda rasakan sebelumnya.</p>
+      {/* Services Section */}
+      <section id="services" className="py-32 bg-background relative border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-24 flex flex-col items-center">
+            <span className="text-gold uppercase tracking-[0.2em] text-xs font-semibold mb-4">— Portofolio Kami</span>
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Layanan Khusus</h2>
+            <div className="w-16 h-[1px] bg-gold/50"></div>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
-            <FeatureCard 
-              icon={<MapPin className="w-6 h-6" />}
-              color="blue"
-              title="Akses Mitra Terdekat"
-              desc="Algoritma cerdas kami menghubungkan Anda dengan mitra laundry terbaik dalam radius terdekat di kota Anda."
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+            <ServiceCard 
+              icon={<Wind />}
+              title="Cuci Kering (Dry Clean)"
+              desc="Protokol perawatan ahli untuk kain rumit dan berharga, memanfaatkan teknik ramah lingkungan berkualitas tinggi."
             />
-            <FeatureCard 
-              icon={<Truck className="w-6 h-6" />}
-              color="indigo"
-              title="Antar Jemput Gratis"
-              desc="Kurir profesional kami siap menjemput cucian kotor dan mengantar kembali pakaian bersih langsung ke depan pintu Anda."
+            <ServiceCard 
+              icon={<Droplets />}
+              title="Perawatan Cuci Reguler"
+              desc="Pakaian harian dicuci dengan sempurna, dirawat secara lembut, dan dilipat atau disetrika dengan kehati-hatian."
             />
-            <FeatureCard 
-              icon={<ShieldCheck className="w-6 h-6" />}
-              color="cyan"
-              title="Garansi Kualitas"
-              desc="Setiap pakaian diperlakukan dengan standar pencucian tertinggi. Kami menggaransi kebersihan dan keharuman setiap helai."
+            <ServiceCard 
+              icon={<Shirt />}
+              title="Setrika & Lipat Utama"
+              desc="Penguapan dan penyetrikaan tanpa cacat. Menjadikan pakaian Anda tampil sempurna dan siap untuk digunakan."
             />
-            <FeatureCard 
-              icon={<Clock className="w-6 h-6" />}
-              color="purple"
-              title="Tracking Real-time"
-              desc="Pantau status pakaian Anda dari mulai penjemputan, proses pencucian, hingga diantar kembali melalui dashboard interaktif."
-            />
-            <FeatureCard 
-              icon={<Sparkles className="w-6 h-6" />}
-              color="orange"
-              title="Layanan Ekstra Cepat"
-              desc="Butuh mendesak? Tersedia opsi Express 12 jam selesai dengan kualitas yang sama-sama memukau."
-            />
-            <FeatureCard 
-              icon={<Shirt className="w-6 h-6" />}
-              color="rose"
-              title="Perlakuan Khusus"
-              desc="Pembersihan noda membandel, dry cleaning, hingga perawatan khusus untuk kebaya, jas, dan gaun premium Anda."
+            <ServiceCard 
+              icon={<Scissors />}
+              title="Penjahitan Kustom"
+              desc="Perubahan, perbaikan ukuran, hingga modifikasi khusus yang dikerjakan oleh para penjahit ahli profesional kami."
             />
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="relative z-10 py-24 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-             <h2 className="text-blue-600 font-semibold tracking-wide uppercase text-sm mb-3">Simpel & Praktis</h2>
-             <h3 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">Bagaimana E-laundry Bekerja?</h3>
+      {/* Experience Section */}
+      <section id="experience" className="py-32 bg-panel overflow-hidden border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-20 items-center">
+          
+          <div>
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-8">Pengalaman Mulus <br/> Tak Terlupakan</h2>
+            <p className="text-gray-400 text-lg leading-relaxed mb-16 max-w-md">
+              Proses eksklusif dan teliti demi kepuasaan tanpa batas. Kami mengurus busana Anda sehingga tetap sepadan dengan gaya hidup premium Anda.
+            </p>
+            
+            <div className="space-y-12">
+              <Step 
+                number="01"
+                title="Penjemputan"
+                desc="Pengambilan yang aman dan eksklusif di lokasi dan waktu yang Anda atur oleh agen penjemput kami yang profesional."
+              />
+              <Step 
+                number="02"
+                title="Pengerjaan"
+                desc="Pembersihan tingkat ahli dan penanganan rumit oleh pengrajin pencucian kami yang terlatih dan bersertifikasi."
+              />
+              <Step 
+                number="03"
+                title="Pengantaran"
+                desc="Garmen dikembalikan dengan sangat aman, terbungkus murni dan rapi, siap pakai untuk berbagai acara Anda."
+              />
+            </div>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-12 relative max-w-5xl mx-auto">
-             {/* Decorative line connecting steps */}
-             <div className="hidden md:block absolute top-12 left-20 right-20 h-0.5 bg-gradient-to-r from-blue-100 via-indigo-200 to-blue-100 -z-10"></div>
-             
-             <div className="relative text-center group">
-               <div className="w-24 h-24 mx-auto bg-white rounded-3xl shadow-xl shadow-blue-900/5 flex items-center justify-center border border-slate-100 mb-8 group-hover:-translate-y-2 transition-transform duration-300">
-                  <span className="text-3xl font-black text-blue-600">1</span>
-               </div>
-               <h4 className="text-xl font-bold text-slate-900 mb-4">Pesan Layanan</h4>
-               <p className="text-slate-600 leading-relaxed">Pilih layanan yang Anda butuhkan, tentukan jadwal penjemputan, dan atur lokasi Anda melalui aplikasi.</p>
-             </div>
-             
-             <div className="relative text-center group">
-               <div className="w-24 h-24 mx-auto bg-white rounded-3xl shadow-xl shadow-indigo-900/5 flex items-center justify-center border border-slate-100 mb-8 group-hover:-translate-y-2 transition-transform duration-300">
-                  <Truck className="w-10 h-10 text-indigo-600" />
-               </div>
-               <h4 className="text-xl font-bold text-slate-900 mb-4">Kami Jemput & Cuci</h4>
-               <p className="text-slate-600 leading-relaxed">Kurir kami akan mengambil cucian, dan mitra profesional kami akan mencucinya dengan standar tinggi.</p>
-             </div>
-             
-             <div className="relative text-center group">
-               <div className="w-24 h-24 mx-auto bg-white rounded-3xl shadow-xl shadow-cyan-900/5 flex items-center justify-center border border-slate-100 mb-8 group-hover:-translate-y-2 transition-transform duration-300">
-                  <CheckCircle2 className="w-10 h-10 text-cyan-600" />
-               </div>
-               <h4 className="text-xl font-bold text-slate-900 mb-4">Siap Dipakai</h4>
-               <p className="text-slate-600 leading-relaxed">Pakaian bersih, wangi, dan rapi diantar kembali ke pintu Anda, siap untuk langsung digunakan.</p>
-             </div>
+          
+          <div className="relative h-[600px] lg:h-[800px] w-full bg-black">
+             <img 
+               src="https://images.unsplash.com/photo-1594938291221-94f18cbb5660?q=80&w=1000&auto=format&fit=crop" 
+               alt="Tailored suit"
+               className="w-full h-full object-cover opacity-80"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
           </div>
+          
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="relative z-10 py-24">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-3xl overflow-hidden bg-slate-900 px-6 py-16 sm:px-12 sm:py-20 text-center shadow-2xl">
-            {/* CTA Background Effects */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full blur-[100px] opacity-40 translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-cyan-600 to-blue-600 rounded-full blur-[100px] opacity-30 -translate-x-1/2 translate-y-1/2"></div>
-            
-            <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-6">
-                Siap untuk hidup yang lebih mudah?
-              </h2>
-              <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-10">
-                Bergabunglah dengan ribuan pengguna lainnya yang telah mempercayakan urusan pakaian mereka kepada E-laundry. Daftar sekarang dan nikmati diskon 20% untuk pesanan pertama!
+      <section className="py-32 bg-background border-t border-white/5">
+        <div className="max-w-5xl mx-auto px-6 lg:px-12">
+          <div className="bg-panel border border-border-dark p-12 md:p-20 text-center relative overflow-hidden">
+            <div className="relative z-10 flex flex-col items-center">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">Layanan Pramutamu Pribadi</h2>
+              <p className="text-gray-400 max-w-2xl text-lg mb-12">
+                Bagi pemegang akun yang memerlukan manajemen gaya dari berbagai arah properti, pengurus pakaian harian penuh, hingga pindah keluar negeri, pramutamu berdedikasi kami senantiasa hadir.
               </p>
-              <Link
-                href="/register"
-                className="inline-flex justify-center items-center gap-2 py-4 px-10 text-lg font-bold text-slate-900 bg-white hover:bg-slate-50 rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
-              >
-                Daftar Gratis Sekarang
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+              
+              <div className="flex flex-col sm:flex-row gap-5">
+                <Link
+                  href="/register"
+                  className="bg-gold hover:bg-gold-hover text-background px-8 py-4 uppercase tracking-widest text-xs font-bold transition-all"
+                >
+                  Ajukan Layanan
+                </Link>
+                <Link
+                  href="/contact"
+                  className="border border-gray-600 hover:border-gold hover:text-gold text-white px-8 py-4 uppercase tracking-widest text-xs font-bold transition-all"
+                >
+                  Layanan Bisnis / Korporat
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-white border-t border-slate-100 pt-16 pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div className="col-span-1 md:col-span-1">
-              <div className="flex items-center gap-2 mb-6">
-                <Shirt className="w-6 h-6 text-blue-600" />
-                <span className="font-bold text-xl text-slate-900 tracking-tight">E-laundry</span>
-              </div>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">
-                Revolusi cara Anda mencuci. Kami membawa layanan prima langsung ke genggaman Anda.
+      <footer id="contacts" className="bg-background border-t border-white/5 pt-20 pb-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+            
+            <div>
+              <Link href="/" className="flex items-center gap-3 text-gold mb-6 inline-flex">
+                <Diamond className="w-5 h-5 fill-current" />
+                <span className="text-xl font-serif tracking-widest text-white">E-LAUNDRY</span>
+              </Link>
+              <p className="text-gray-500 text-sm leading-relaxed mb-8 max-w-xs font-light">
+                Kesempurnaan mutlak dalam tiap helaian perawatan busana. Membina lemari paling indah di seluruh dunia sejak 2026.
               </p>
+              <div className="flex gap-4 text-gold">
+                <div className="w-8 h-8 rounded-full border border-gray-800 flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-colors cursor-pointer">
+                  <span className="text-[10px]">IG</span>
+                </div>
+                <div className="w-8 h-8 rounded-full border border-gray-800 flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-colors cursor-pointer">
+                  <span className="text-[10px]">IN</span>
+                </div>
+                <div className="w-8 h-8 rounded-full border border-gray-800 flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-colors cursor-pointer">
+                  <span className="text-[10px]">TW</span>
+                </div>
+              </div>
             </div>
             
             <div>
-              <h4 className="font-bold text-slate-900 mb-4">Layanan</h4>
-              <ul className="space-y-3">
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Cuci Komplit</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Setrika Saja</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Express 12 Jam</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Dry Cleaning</Link></li>
+              <h4 className="text-white text-xs tracking-widest uppercase font-bold mb-8">Disiplin Kerja</h4>
+              <ul className="space-y-4 text-sm font-light text-gray-400">
+                <li><Link href="#" className="hover:text-gold transition-colors">Cuci Kering Eksklusif</Link></li>
+                <li><Link href="#" className="hover:text-gold transition-colors">Perawatan Harian</Link></li>
+                <li><Link href="#" className="hover:text-gold transition-colors">Setrika & Press Panas</Link></li>
+                <li><Link href="#" className="hover:text-gold transition-colors">Penjahitan Kustom</Link></li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-bold text-slate-900 mb-4">Perusahaan</h4>
-              <ul className="space-y-3">
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Tentang Kami</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Karir</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Mitra Laundry</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Blog</Link></li>
+              <h4 className="text-white text-xs tracking-widest uppercase font-bold mb-8">Tata Kelola</h4>
+              <ul className="space-y-4 text-sm font-light text-gray-400">
+                <li><Link href="#" className="hover:text-gold transition-colors">Keistimewaan Klien</Link></li>
+                <li><Link href="#" className="hover:text-gold transition-colors">Ketentuan Layanan Umum</Link></li>
+                <li><Link href="#" className="hover:text-gold transition-colors">Kebijakan Privasi Penuh</Link></li>
+                <li><Link href="#" className="hover:text-gold transition-colors">Aspek Hukum</Link></li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-bold text-slate-900 mb-4">Bantuan & Legal</h4>
-              <ul className="space-y-3">
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Pusat Bantuan</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Syarat & Ketentuan</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Kebijakan Privasi</Link></li>
-                <li><Link href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Kontak</Link></li>
+              <h4 className="text-white text-xs tracking-widest uppercase font-bold mb-8">Penghubung</h4>
+              <ul className="space-y-4 text-sm font-light text-gray-400">
+                <li className="flex gap-3">
+                  <Phone className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                  <span>+62 811 2345 6789</span>
+                </li>
+                <li className="flex gap-3">
+                  <Mail className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                  <span>concierge@elaundry.com</span>
+                </li>
+                <li className="flex gap-3">
+                  <MapPin className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                  <span>Pacific Century Place<br/>Jakarta, Indonesia</span>
+                </li>
               </ul>
             </div>
+            
           </div>
           
-          <div className="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-400 text-sm">© {new Date().getFullYear()} E-laundry Inc. Hak Cipta Dilindungi.</p>
-            <div className="flex gap-4">
-               {/* Social placeholders */}
-               <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer">
-                 <span className="text-xs font-bold">FB</span>
-               </div>
-               <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer">
-                 <span className="text-xs font-bold">IG</span>
-               </div>
-               <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer">
-                 <span className="text-xs font-bold">TW</span>
-               </div>
-            </div>
+          <div className="border-t border-white/5 pt-8 text-center text-xs text-gray-600 tracking-widest font-light uppercase">
+            © {new Date().getFullYear()} GRUP E-LAUNDRY. HAK CIPTA DILINDUNGI PENUH.
           </div>
         </div>
       </footer>
@@ -308,27 +273,26 @@ export default function Home() {
   );
 }
 
-// Reusable Feature Card Component
-function FeatureCard({ icon, color, title, desc }: { icon: React.ReactNode, color: string, title: string, desc: string }) {
-  const colorMap: Record<string, string> = {
-    blue: "bg-blue-50 text-blue-600 border-blue-100",
-    indigo: "bg-indigo-50 text-indigo-600 border-indigo-100",
-    cyan: "bg-cyan-50 text-cyan-600 border-cyan-100",
-    purple: "bg-purple-50 text-purple-600 border-purple-100",
-    orange: "bg-orange-50 text-orange-600 border-orange-100",
-    rose: "bg-rose-50 text-rose-600 border-rose-100",
-  };
-
+function ServiceCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
   return (
-    <div className="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl shadow-slate-200/50 border border-slate-100 hover:border-slate-200 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-      {/* Decorative gradient blob inside card */}
-      <div className={`absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-300 blur-2xl \${colorMap[color].split(' ')[0]}`}></div>
-      
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border \${colorMap[color]} group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
+    <div className="group border-l border-white/5 pl-6 pt-2 hover:border-gold transition-colors duration-500">
+      <div className="text-gold mb-6 transform group-hover:-translate-y-1 transition-transform duration-500">
         {icon}
       </div>
-      <h3 className="text-xl font-bold text-slate-900 mb-3 tracking-tight">{title}</h3>
-      <p className="text-slate-600 leading-relaxed text-sm sm:text-base">{desc}</p>
+      <h3 className="text-xl font-serif text-white mb-4 tracking-wide">{title}</h3>
+      <p className="text-gray-400 leading-relaxed text-sm font-light pr-4">{desc}</p>
+    </div>
+  );
+}
+
+function Step({ number, title, desc }: { number: string, title: string, desc: string }) {
+  return (
+    <div className="flex gap-8 group">
+      <div className="text-gold text-lg font-serif italic">{number}</div>
+      <div className="border-t border-white/10 pt-2 flex-1 group-hover:border-gold transition-colors duration-500">
+        <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
+        <p className="text-gray-400 font-light text-sm">{desc}</p>
+      </div>
     </div>
   );
 }

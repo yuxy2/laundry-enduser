@@ -2,10 +2,9 @@
 
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { 
   ArrowLeft, MapPin, Receipt, Clock, CheckCircle2, 
-  Package, Truck, Shirt, Loader2, Home, AlertCircle, User
+  Package, Truck, User, Loader2, AlertCircle, Diamond
 } from "lucide-react";
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -26,25 +25,24 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://laundry-app-one-theta.vercel.app";
-        // Fetch all user orders, then find the one matching the current ID
         const res = await fetch(`${apiUrl}/api/order`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
         if (!res.ok) {
-          throw new Error("Gagal mengambil data pesanan");
+          throw new Error("Gagal mengurai database order");
         }
 
         const data = await res.json();
         const foundOrder = (data.data || []).find((o: any) => o._id === id);
 
         if (!foundOrder) {
-          throw new Error("Pesanan tidak ditemukan");
+          throw new Error("Catatan layanan tidak terdeteksi");
         }
 
         setOrder(foundOrder);
       } catch (err: any) {
-        setError(err.message || "Terjadi kesalahan sistem");
+        setError(err.message || "Interupsi sistem server");
       } finally {
         setLoading(false);
       }
@@ -59,12 +57,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
   const getStatusText = (status: string) => {
     const map: any = {
-      "placed": "Menunggu Pembayaran / Dibuat",
-      "paid": "Sudah Dibayar (Menunggu Pick-Up)",
-      "inProgress": "Sedang Dicuci (Proses)",
-      "outForDelivery": "Dalam Pengantaran Kurir",
+      "placed": "Menunggu Otorisasi Dana",
+      "paid": "Otorisasi Pembayaran Selesai",
+      "inProgress": "Perawatan & Pencucian Aktif",
+      "outForDelivery": "Armada Ekspedisi Bergerak",
       "delivered": "Selesai",
-      "cancelled": "Dibatalkan"
+      "cancelled": "Dibatalkan / Void"
     };
     return map[status] || status;
   };
@@ -73,96 +71,95 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   const statusSteps = ["placed", "paid", "inProgress", "outForDelivery", "delivered"];
   const currentStepIndex = statusSteps.indexOf(order?.status);
 
-  if (loading) {
+  if (error || (!loading && !order)) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-      </div>
-    );
-  }
-
-  if (error || !order) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 text-center">
-        <AlertCircle className="w-16 h-16 text-red-400 mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Ups, Gagal Memuat</h2>
-        <p className="text-gray-500 mb-6">{error}</p>
-        <Link href="/dashboard" className="px-6 py-2 bg-blue-600 text-white font-bold rounded-xl shadow-lg">Kembali ke Beranda</Link>
+      <div className="min-h-screen bg-background text-foreground font-sans pb-20 selection:bg-gold selection:text-background flex flex-col items-center justify-center p-6 text-center">
+        <Diamond className="w-12 h-12 text-gray-500 mb-6" />
+        <h2 className="text-2xl font-serif text-white mb-2">Akses Tertolak</h2>
+        <p className="text-gray-400 font-light mb-8 max-w-sm">{error || "Data pesanan tidak ditemukan"}</p>
+        <button onClick={() => router.push("/dashboard")} className="px-8 py-3 bg-panel border border-border-dark text-white text-xs uppercase tracking-widest hover:border-gold transition-colors">Kembali ke Utama</button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans pb-10">
-      {/* Header Mobile / Desktop */}
-      <header className="bg-blue-600 text-white sticky top-0 z-40 shadow-md">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4 h-16">
+    <div className="min-h-screen bg-background text-foreground font-sans pb-20 selection:bg-gold selection:text-background">
+      {/* Header */}
+      <header className="bg-panel border-b border-white/5 sticky top-0 z-40">
+        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center gap-4 h-20">
             <button 
               onClick={() => router.back()}
-              className="p-2 -ml-2 text-white/80 hover:text-white transition-colors rounded-full hover:bg-white/10"
+              className="p-2 -ml-2 text-gold hover:text-white transition-colors flex items-center gap-2"
             >
-              <ArrowLeft className="w-6 h-6" />
+              <ArrowLeft className="w-4 h-4" />
             </button>
-            <h1 className="text-lg font-extrabold flex-1">
-              Validasi Pesanan
+            <h1 className="text-sm font-serif uppercase tracking-[0.2em] text-white flex-1 relative top-px">
+              Bukti Validasi Inspeksi
             </h1>
           </div>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        
+      <main className="max-w-3xl mx-auto px-6 lg:px-8 py-10 space-y-12">
+        {loading ? (
+          <div className="space-y-12 animate-pulse w-full">
+            <div className="bg-panel border border-border-dark h-80"></div>
+            <div className="bg-panel border border-border-dark h-32"></div>
+            <div className="bg-panel border border-border-dark h-64"></div>
+          </div>
+        ) : (
+          <>
         {/* Status Tracker Card */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 overflow-hidden relative">
-          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-400 to-indigo-600"></div>
+        <section className="bg-panel border border-border-dark p-8 sm:p-12 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl opacity-50"></div>
           
-          <div className="flex justify-between items-start mb-6 border-b border-gray-50 pb-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 border-b border-white/5 pb-8 relative z-10">
             <div>
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">ID TAGIHAN</p>
-              <h2 className="text-lg font-extrabold text-blue-700 tracking-tight">#{order._id.substring(order._id.length - 8).toUpperCase()}</h2>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em] mb-2">LEMBAR REFERENSI</p>
+              <h2 className="text-xl sm:text-2xl font-serif text-white tracking-wide">#{order._id.substring(order._id.length - 8).toUpperCase()}</h2>
             </div>
             {order.status !== "paid" && order.status !== "delivered" && order.status !== "inProgress" && order.status !== "outForDelivery" ? (
-             <span className="text-xs font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-md uppercase">Belum Lunas</span>
+             <span className="text-[10px] font-bold text-red-400 bg-red-400/10 border border-red-500/20 px-4 py-2 uppercase tracking-widest">Aksi Diperlukan</span>
             ) : (
-             <span className="text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-md shadow-sm border border-green-100 flex items-center gap-1">
-               <CheckCircle2 className="w-3.5 h-3.5" /> Lunas
+             <span className="text-[10px] font-bold text-gold bg-gold/5 border border-gold/30 px-4 py-2 uppercase tracking-widest flex items-center gap-2">
+               Lunas Terverifikasi <CheckCircle2 className="w-3.5 h-3.5" />
              </span>
             )}
           </div>
 
-          <h3 className="text-base font-extrabold text-gray-900 mb-6 flex items-center gap-2">
-            Status: <span className="text-blue-600">{getStatusText(order.status)}</span>
+          <h3 className="text-sm font-bold text-gray-300 mb-10 flex items-center gap-3 uppercase tracking-widest relative z-10">
+            Keadaan: <span className="text-gold border border-gold/50 px-3 py-1 bg-gold/10 font-serif normal-case tracking-normal">{getStatusText(order.status)}</span>
           </h3>
 
           {/* Progress Visualizer */}
-          <div className="relative mb-6">
-            <div className="absolute top-1/2 left-4 right-4 h-1 bg-gray-100 -translate-y-1/2 rounded-full z-0"></div>
+          <div className="relative mb-12 z-10 pt-4 pb-2">
+            <div className="absolute top-1/2 left-6 right-6 h-[1px] bg-border-dark -translate-y-1/2 z-0"></div>
             <div 
-              className="absolute top-1/2 left-4 h-1 bg-blue-500 -translate-y-1/2 rounded-full z-0 transition-all duration-1000"
+              className="absolute top-1/2 left-6 h-[1px] bg-gold -translate-y-1/2 z-0 transition-all duration-1000"
               style={{ width: `${Math.max(0, currentStepIndex * 25)}%` }}
             ></div>
             
-            <div className="relative z-10 flex justify-between">
+            <div className="relative z-10 flex justify-between px-2">
               {[
-                { icon: Receipt, label: "Dibuat" },
+                { icon: Receipt, label: "Masuk" },
                 { icon: CheckCircle2, label: "Lunas" },
-                { icon: Shirt, label: "Proses" },
-                { icon: Truck, label: "Antar" },
-                { icon: Package, label: "Selesai" }
+                { icon: Diamond, label: "Kurasi" },
+                { icon: Truck, label: "Jemput" },
+                { icon: Package, label: "Penyerahan" }
               ].map((step, index) => {
                 const isActive = index <= currentStepIndex;
                 const isCurrent = index === currentStepIndex;
                 return (
-                  <div key={index} className="flex flex-col items-center gap-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
+                  <div key={index} className="flex flex-col items-center gap-4 bg-panel">
+                    <div className={`w-10 h-10 flex items-center justify-center border transition-all duration-500 bg-panel ${
                       isActive 
-                        ? "bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-500/40" 
-                        : "bg-white border-gray-200 text-gray-300"
-                    } ${isCurrent ? "ring-4 ring-blue-100" : ""}`}>
+                        ? "border-gold text-gold" 
+                        : "border-border-dark text-gray-600"
+                    } ${isCurrent ? "shadow-[0_0_15px_rgba(203,168,113,0.3)] bg-gold/10" : ""}`}>
                       <step.icon className="w-4 h-4" />
                     </div>
-                    <span className={`text-[10px] sm:text-xs font-bold ${isActive ? "text-gray-900" : "text-gray-400"}`}>
+                    <span className={`text-[9px] font-bold uppercase tracking-widest ${isActive ? "text-gray-300" : "text-gray-600"}`}>
                       {step.label}
                     </span>
                   </div>
@@ -171,54 +168,60 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             </div>
           </div>
           
-          <div className="bg-blue-50 rounded-xl p-4 flex gap-3 text-sm">
-            <Clock className="w-5 h-5 text-blue-600 flex-shrink-0" />
-            <p className="text-blue-800 font-medium">
-              Tanggal Pesanan: <strong className="font-extrabold">{new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'})} WIB</strong>
+          <div className="bg-background border border-white/5 p-5 flex items-center justify-between gap-4 text-sm mt-4 relative z-10">
+            <div className="flex items-center gap-3">
+              <Clock className="w-4 h-4 text-gray-500 shrink-0" />
+              <p className="text-gray-400 font-light text-xs tracking-widest uppercase">
+                Masuk Jurnal
+              </p>
+            </div>
+            <p className="text-white font-serif tracking-wider">
+              {new Date(order.createdAt).toLocaleString('id-ID', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})} WIB
             </p>
           </div>
         </section>
 
         {/* Mitra / Laundry Detail */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4 group cursor-pointer hover:border-blue-200 transition-colors">
-          <div className="w-16 h-16 rounded-xl bg-gray-100 overflow-hidden shadow-sm flex-shrink-0">
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={order.laundry?.imageUrl || "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=100&h=100&fit=crop"} alt="mitra" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-          </div>
+        <section className="bg-panel rounded-none border border-border-dark p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6 relative group overflow-hidden">
+           {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={order.laundry?.imageUrl || "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=100&h=100&fit=crop"} alt="mitra" className="w-20 h-20 object-cover opacity-90 group-hover:scale-110 group-hover:opacity-100 transition-all duration-500 border border-border-dark shrink-0" />
+          
           <div className="flex-1">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-0.5">Dicuci oleh</p>
-            <h3 className="text-lg font-bold text-gray-900">{order.laundry?.laundryName || "Mitra Laundry"}</h3>
-            <p className="text-xs text-gray-500 font-medium flex items-center gap-1 mt-1">
-              <MapPin className="w-3.5 h-3.5" /> {order.laundry?.city}
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2">Penanggung Jawab Kurasi</p>
+            <h3 className="text-xl font-serif text-white tracking-wide mb-2 group-hover:text-gold transition-colors">{order.laundry?.laundryName || "Mitra Anonim"}</h3>
+            <p className="text-xs text-gray-400 font-light flex items-center gap-2 uppercase tracking-widest">
+              <MapPin className="w-3 h-3 text-gold" /> {order.laundry?.city}
             </p>
           </div>
         </section>
 
         {/* Delivery Details */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-base font-extrabold text-gray-900 mb-4 pb-3 border-b border-gray-50">Pengantaran</h3>
+        <section className="bg-panel border border-border-dark p-8 sm:p-10 relative">
+          <h3 className="text-sm font-serif text-white uppercase tracking-widest mb-8 border-b border-white/5 pb-4 flex items-center gap-3">
+             <span className="w-8 h-[1px] bg-gold block"></span>
+             Logistik & Destinasi
+          </h3>
           
-          <div className="space-y-3 relative">
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
-                 <User className="w-4 h-4" />
+          <div className="space-y-8 relative">
+            <div className="flex gap-5">
+              <div className="w-8 h-8 bg-background border border-border-dark flex items-center justify-center text-gray-400 shrink-0 mt-1">
+                 <User className="w-3 h-3" />
               </div>
-              <div>
-                <p className="text-xs font-bold text-gray-500 uppercase">Penerima</p>
-                <p className="text-sm font-bold text-gray-900">{order.deliveryDetails?.name || "-"}</p>
-                <p className="text-xs font-medium text-gray-500">{order.deliveryDetails?.email || "-"}</p>
+              <div className="flex-1">
+                <p className="text-[10px] font-bold text-gold uppercase tracking-widest mb-2">Pemegang Akun Klien</p>
+                <p className="text-base font-serif text-white mb-1 tracking-wide">{order.deliveryDetails?.name || "-"}</p>
+                <p className="text-xs font-light text-gray-500">{order.deliveryDetails?.email || "-"}</p>
               </div>
             </div>
 
-            <div className="flex gap-3 pt-2">
-              <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 flex-shrink-0">
-                 <MapPin className="w-4 h-4" />
+            <div className="flex gap-5">
+              <div className="w-8 h-8 bg-background border border-border-dark flex items-center justify-center text-gray-400 shrink-0 mt-1">
+                 <MapPin className="w-3 h-3" />
               </div>
-              <div>
-                <p className="text-xs font-bold text-gray-500 uppercase">Alamat Lengkap</p>
-                <p className="text-sm font-bold text-gray-900">{order.deliveryDetails?.city || "-"}</p>
-                <p className="text-sm font-medium text-gray-600 leading-relaxed mt-1">
-                  {order.deliveryDetails?.addressLine1 || "-"}
+              <div className="flex-1">
+                <p className="text-[10px] font-bold text-gold uppercase tracking-widest mb-2">Titik Koordinat ({order.deliveryDetails?.city || "Kota Tidak Diketahui"})</p>
+                <p className="text-sm font-light text-gray-300 leading-relaxed border-l-[1px] border-border-dark pl-4 italic">
+                  "{order.deliveryDetails?.addressLine1 || "-"}"
                 </p>
               </div>
             </div>
@@ -226,48 +229,54 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         </section>
 
         {/* Keranjang & Items */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 pb-4">
-            <h3 className="text-base font-extrabold text-gray-900">Ringkasan Layanan</h3>
+        <section className="bg-panel border border-border-dark overflow-hidden">
+          <div className="p-8 sm:p-10 border-b border-white/5">
+            <h3 className="text-sm font-serif text-white uppercase tracking-widest">Tindakan Kepemilikan</h3>
           </div>
           
-          <div className="bg-gray-50/50 p-6 space-y-4">
-            {order.cartItems.map((item: any) => (
-              <div key={item.serviceId} className="flex justify-between items-start border-b border-gray-200/60 pb-4 last:border-0 last:pb-0">
-                <div>
-                  <h4 className="font-bold text-gray-900">{item.name}</h4>
-                  <p className="text-sm font-medium text-gray-500 mt-1">Qty: <span className="font-bold text-gray-700">{item.quantity}</span> x Pcs/Kg</p>
+          <div className="bg-background/50 px-8 py-2">
+            {order.cartItems.map((item: any, idx: number) => (
+              <div key={item.serviceId} className={`flex justify-between items-center py-6 ${idx !== order.cartItems.length - 1 ? 'border-b border-border-dark' : ''}`}>
+                <div className="flex items-center gap-4">
+                  <div className="w-6 h-6 border border-gold/30 bg-gold/5 flex items-center justify-center text-[10px] font-mono text-gold shrink-0">
+                    {item.quantity}
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-gray-200 tracking-wide">{item.name}</h4>
+                    <p className="text-[10px] uppercase tracking-widest text-gray-500 mt-1 font-light">Unit Pengukuran</p>
+                  </div>
                 </div>
-                {/* As backend drops price per item in cart items array dynamically, we don't have item price. Total handles it */}
               </div>
             ))}
           </div>
 
-          <div className="p-6 bg-white border-t border-gray-100 flex justify-between items-end">
+          <div className="p-8 sm:p-10 bg-panel border-t border-border-dark flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
             <div>
-              <p className="text-sm font-semibold text-gray-500 mb-0.5">Total Tagihan Final</p>
-              <p className="text-xs text-gray-400">Termasuk pajak & biaya admin</p>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2">Nilai Eksekusi Akhir</p>
+              <p className="text-[10px] uppercase font-light text-gray-400 tracking-widest max-w-xs leading-relaxed">Penyetoran mencakup keseluruhan beban armada jemput silang dan asuransi pemeliharaan parsial.</p>
             </div>
-            <div className="text-2xl font-extrabold text-blue-600">
+            <div className="text-3xl font-serif text-gold tracking-wider">
               {formatIDR(order.totalAmount)}
             </div>
           </div>
         </section>
         
         {order.status === "placed" && (
-            <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200/60 flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-               <p className="text-sm text-amber-800 font-medium">
-                 Link pembayaran mungkin kedaluwarsa jika Anda belum membayar. Silakan hubungi admin jika gagal bayar.
+            <div className="p-6 bg-red-500/5 border border-red-500/20 flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
+              <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+               <p className="text-xs font-light tracking-wide text-red-300 leading-relaxed">
+                 Otorisasi dana tagihan ini masih terpendam dan dapat kedaluwarsa sewaktu-waktu. Harap segera lanjutkan prosedur penyelesaian lewat email atau pusat pelaporan kami.
                </p>
             </div>
         )}
 
-        <div className="pt-4 pb-8 flex justify-center">
-            <Link href="/dashboard" className="text-sm font-bold text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors">
-              Kembali ke Dashboard Utama <ArrowLeft className="w-4 h-4 rotate-180" />
-            </Link>
+        <div className="pt-8 pb-12 flex justify-center">
+            <button onClick={() => router.push("/dashboard")} className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-500 hover:text-gold flex items-center gap-3 transition-colors">
+              Kembali <ArrowLeft className="w-4 h-4 rotate-180" />
+            </button>
         </div>
+          </>
+        )}
       </main>
     </div>
   );

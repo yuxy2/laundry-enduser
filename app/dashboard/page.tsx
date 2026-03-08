@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { 
   LogOut, User, MapPin, Search, Star, Clock, 
-  ChevronRight, Shirt, Loader2, Home, FileText
+  ChevronRight, Diamond, FileText, Home
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -16,7 +15,7 @@ export default function DashboardPage() {
   // States for API data
   const [activeOrders, setActiveOrders] = useState<any[]>([]);
   const [recommendedPartners, setRecommendedPartners] = useState<any[]>([]);
-  const [searchCity, setSearchCity] = useState("Yogyakarta"); // Default city for recommendations
+  const [searchCity, setSearchCity] = useState("Yogyakarta");
 
   useEffect(() => {
     // Authentication Check
@@ -24,7 +23,7 @@ export default function DashboardPage() {
     const storedUser = localStorage.getItem("userData");
 
     if (!token) {
-      router.push("/login"); // Redirect to login if no token
+      router.push("/login");
       return;
     } else {
       if (storedUser) {
@@ -41,9 +40,6 @@ export default function DashboardPage() {
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://laundry-app-one-theta.vercel.app";
         
-        // Parallel API Requests:
-        // 1. Fetch Orders (Needs Auth)
-        // 2. Fetch Laundries locally in Yogyakarta (Public API)
         const [ordersRes, laundriesRes] = await Promise.all([
           fetch(`${apiUrl}/api/order`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -53,7 +49,6 @@ export default function DashboardPage() {
 
         if (ordersRes.ok) {
           const ordersData = await ordersRes.json();
-          // Filter out delivered or cancelled orders to show only "active"
           const active = (ordersData.data || []).filter(
             (o: any) => o.status !== "delivered" && o.status !== "cancelled"
           );
@@ -88,25 +83,17 @@ export default function DashboardPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-      </div>
-    );
-  }
+  // Removing top-level loading early return
 
-  // Format IDR currency helper
   const formatIDR = (amount: number) => {
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(amount || 0);
   };
 
-  // Status text map
   const getStatusText = (status: string) => {
     const map: any = {
-      "placed": "Pesanan Dibuat",
-      "paid": "Sudah Dibayar",
-      "inProgress": "Sedang Dicuci",
+      "placed": "Pesanan Diterima",
+      "paid": "Otorisasi Pembayaran",
+      "inProgress": "Perawatan Aktif",
       "outForDelivery": "Dlm Pengantaran",
       "delivered": "Selesai",
       "cancelled": "Dibatalkan"
@@ -115,132 +102,119 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0 text-gray-800 font-sans selection:bg-blue-200">
-      {/* Top Header - Desktop & Mobile */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white shadow-md">
-                <Shirt className="w-4 h-4" />
-              </div>
-              <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-600 hidden sm:block">
-                E-laundry
-              </span>
-            </div>
+    <div className="min-h-screen bg-background pb-20 md:pb-0 text-foreground font-sans selection:bg-gold selection:text-background">
+      {/* Top Header */}
+      <header className="bg-panel border-b border-white/5 sticky top-0 z-40 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <button onClick={() => router.push("/dashboard")} className="flex items-center gap-3 text-gold hover:text-white transition-colors">
+              <Diamond className="w-5 h-5 fill-current" />
+              <span className="text-lg font-serif tracking-widest text-white hidden sm:block">E-LAUNDRY</span>
+            </button>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               <div className="flex flex-col items-end mr-2 hidden sm:flex">
-                <span className="text-sm font-bold text-gray-900">{userData?.name || "Pelanggan"}</span>
-                <span className="text-xs font-semibold text-gray-500">{userData?.email || ""}</span>
+                <span className="text-sm font-serif text-white tracking-wide">{userData?.name || "Klien Anonim"}</span>
+                <span className="text-xs font-light tracking-wide text-gray-400">{userData?.email || "Privat"}</span>
               </div>
-              <Link href="/profile" className="w-10 h-10 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
-                {userData?.name?.charAt(0).toUpperCase() || <User className="w-5 h-5 text-blue-600" />}
-              </Link>
+              <button onClick={() => router.push("/profile")} className="w-10 h-10 rounded-none bg-background border border-border-dark flex items-center justify-center text-gold font-serif text-lg overflow-hidden cursor-pointer hover:border-gold transition-all">
+                {userData?.name?.charAt(0).toUpperCase() || <User className="w-4 h-4 text-gold" />}
+              </button>
               <button 
                 onClick={handleLogout}
-                className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors hidden sm:flex"
-                title="Keluar"
+                className="w-10 h-10 border border-white/5 bg-white/5 text-gray-400 hover:text-red-400 hover:border-red-900 flex items-center justify-center transition-colors hidden sm:flex"
+                title="Log Out"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
         {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-            Halo, {userData?.name?.split(' ')[0] || "Teman"}! <span className="inline-block animate-bounce origin-bottom-right delay-1000">👋</span>
-          </h1>
-          <p className="mt-1.5 text-gray-500 font-medium text-lg">Mau cuci apa hari ini?</p>
+        <div className="mb-12 border-b border-white/5 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-serif text-white tracking-tight mb-2">
+              Salam hangat, {userData?.name?.split(' ')[0] || "Klien"}. 
+            </h1>
+            <p className="text-gray-400 font-light text-sm tracking-wide uppercase">Konsol Manajemen Perawatan Pribadi</p>
+          </div>
         </div>
 
-        {/* Search Bar Action */}
-        <form onSubmit={handleSearch} className="relative mb-10 group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors z-10">
-            <Search className="h-5 w-5" />
-          </div>
-          <input
-            type="text"
-            value={searchCity}
-            onChange={(e) => setSearchCity(e.target.value)}
-            className="w-full pl-12 pr-24 py-4 bg-white border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium shadow-sm hover:shadow-md text-base"
-            placeholder="Cari Kota... (misal: Yogyakarta, Bandung)"
-            required
-          />
-          <button type="submit" className="absolute inset-y-2 right-2 px-5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm">
-            Cari
-          </button>
-        </form>
-
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
           
           {/* Left Column (Orders) */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="xl:col-span-2 space-y-12">
             
-            {/* Active Orders */}
             <section>
-              <div className="flex justify-between items-end mb-5">
-                <h2 className="text-xl font-extrabold text-gray-900">Pesanan Aktif</h2>
-                <Link href="/orders" className="text-sm font-bold text-blue-600 hover:text-blue-800 hover:underline underline-offset-4 transition-all">
-                  Lihat Semua
-                </Link>
+              <div className="flex justify-between items-end mb-8">
+                <h2 className="text-lg font-serif text-white uppercase tracking-widest relative">
+                  <span className="absolute -left-4 top-1 aspect-square w-1 bg-gold"></span>
+                  Pesanan Berjalan
+                </h2>
+                <button onClick={() => router.push("/orders")} className="text-xs font-bold tracking-widest uppercase text-gold hover:text-white transition-all">
+                  Riwayat Penuh
+                </button>
               </div>
               
-              {activeOrders.length > 0 ? (
+              {loading ? (
+                <div className="space-y-4 animate-pulse">
+                  {[1, 2].map((i) => (
+                    <div key={i} className="bg-panel border border-border-dark p-6 h-48 mt-4"></div>
+                  ))}
+                </div>
+              ) : activeOrders.length > 0 ? (
                 <div className="space-y-4">
                   {activeOrders.map((order) => (
-                    <Link href={`/order/${order._id}`} key={order._id}>
-                      <div className="bg-white border hover:border-blue-300 p-5 sm:p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all relative overflow-hidden group cursor-pointer mt-4">
-                        <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-400 to-indigo-600"></div>
+                    <div onClick={() => router.push(`/order/${order._id}`)} key={order._id} className="block group">
+                      <div className="bg-panel border border-border-dark p-6 hover:border-gold transition-all relative overflow-hidden cursor-pointer mt-4">
                         
-                        <div className="flex justify-between items-start mb-4">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                           <div>
-                            <p className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-md mb-2.5 inline-block uppercase tracking-wider">
-                              {getStatusText(order.status)}
+                            <p className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] mb-2">
+                              STAT: {getStatusText(order.status)}
                             </p>
-                            <h3 className="text-lg font-bold text-gray-900">{order.laundry?.laundryName || "Laundry Mitra"}</h3>
+                            <h3 className="text-xl font-serif text-white">{order.laundry?.laundryName || "Mitra Kurasi Privat"}</h3>
                           </div>
-                          <span className="text-xs font-bold text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-lg border border-gray-100">
-                            #{order._id.substring(order._id.length - 6).toUpperCase()}
+                          <span className="text-[10px] tracking-widest font-mono text-gray-500 bg-background px-3 py-1.5 border border-white/5">
+                            ID/ {order._id.substring(order._id.length - 8).toUpperCase()}
                           </span>
                         </div>
                         
-                        <div className="flex items-center gap-5 text-sm text-gray-600 mb-5">
+                        <div className="flex items-center gap-6 text-xs text-gray-400 font-light mb-6">
                           <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-gray-400" />
-                            <span className="font-medium">{new Date(order.createdAt).toLocaleDateString('id-ID', {day: 'numeric', month: 'short'})}</span>
+                            <Clock className="w-3.5 h-3.5 text-gold" />
+                            <span>{new Date(order.createdAt).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'})}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Shirt className="w-4 h-4 text-gray-400" />
-                            <span className="font-bold text-gray-900">{formatIDR(order.totalAmount)}</span>
+                            <Diamond className="w-3.5 h-3.5 text-gold" />
+                            <span className="text-white">{formatIDR(order.totalAmount)}</span>
                           </div>
                         </div>
                         
-                        <div className="pt-4 flex justify-between items-center border-t border-gray-100/80">
-                          <span className="text-sm font-semibold text-gray-500">Estimasi Tiba: {order.laundry?.estimatedDeliveryTime || "1-2 Hari"}</span>
-                          <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                            <ChevronRight className="w-4 h-4 ml-0.5" />
-                          </div>
+                        <div className="pt-5 flex justify-between items-center border-t border-white/5">
+                          <span className="text-xs font-light text-gray-400 tracking-wide uppercase">Durasi: {order.laundry?.estimatedDeliveryTime || "Standar 48 Jam"}</span>
+                          <span className="text-xs text-gold uppercase tracking-widest font-bold group-hover:text-white transition-colors flex items-center gap-1">
+                            Rincian <ChevronRight className="w-3 h-3" />
+                          </span>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               ) : (
-                <div className="bg-white border-2 border-gray-100 border-dashed rounded-3xl p-10 text-center">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Clock className="w-10 h-10 text-gray-300" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Belum ada pesanan aktif</h3>
-                  <p className="text-gray-500 font-medium mb-6">Yuk cari mitra terdekat dan mulai mencuci bebas repot hari ini.</p>
-                  <Link href={`/search?city=${searchCity}`} className="px-6 py-3 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-100 transition-colors">
-                    Mulai Pesan Layanan
-                  </Link>
+                <div className="bg-panel border border-border-dark p-12 text-center relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl opacity-50"></div>
+                  <Diamond className="w-8 h-8 text-gold/30 mx-auto mb-4" />
+                  <h3 className="text-xl font-serif text-white mb-2">Belum ada aktivitas</h3>
+                  <p className="text-gray-400 font-light text-sm mb-8 tracking-wide">Lemari pelacakan Anda saat ini kosong.</p>
+                  
+                  <button onClick={() => router.push(`/search?city=${searchCity}`)} className="inline-flex justify-center items-center bg-gold hover:bg-gold-hover text-background px-6 py-3 uppercase tracking-widest text-[10px] font-bold transition-all relative z-10">
+                    Jadwalkan Layanan
+                  </button>
                 </div>
               )}
             </section>
@@ -248,81 +222,107 @@ export default function DashboardPage() {
           </div>
 
           {/* Right Column (Recommendations) */}
-          <div className="lg:col-span-1 space-y-8">
+          <div className="xl:col-span-1 space-y-10">
+            
+            {/* Search Box as part of the side column */}
+            <div className="bg-panel border border-border-dark p-6">
+              <h3 className="text-xs font-bold tracking-widest text-gold uppercase mb-5">Lokasi Layanan</h3>
+              <form onSubmit={handleSearch} className="relative group">
+                <input
+                  type="text"
+                  value={searchCity}
+                  onChange={(e) => setSearchCity(e.target.value)}
+                  className="w-full pl-0 pr-10 py-2 bg-transparent border-b border-border-dark text-white placeholder-gray-600 focus:outline-none focus:border-gold transition-colors font-light text-sm rounded-none"
+                  placeholder="Wilayah kurasi (mis. Jakarta)"
+                  required
+                />
+                <button type="submit" className="absolute inset-y-0 right-0 text-gray-500 hover:text-gold transition-colors">
+                  <Search className="h-4 w-4" />
+                </button>
+              </form>
+            </div>
+
             <section>
-              <h2 className="text-xl font-extrabold text-gray-900 mb-5">Mitra di {searchCity}</h2>
+              <h2 className="text-sm font-serif text-white uppercase tracking-widest mb-6 flex items-center gap-3">
+                <span className="w-8 h-[1px] bg-gold block"></span>
+                Kurasi di {searchCity}
+              </h2>
               
-              {recommendedPartners.length > 0 ? (
+              {loading ? (
+                <div className="space-y-4 animate-pulse">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="bg-panel border border-border-dark h-28"></div>
+                  ))}
+                </div>
+              ) : recommendedPartners.length > 0 ? (
                 <div className="space-y-4">
                   {recommendedPartners.map((partner) => (
-                    <Link href={`/partner/${partner._id}`} key={partner._id} className="block group">
-                      <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 group-hover:shadow-md transition-all flex h-28">
-                        <div className="w-28 relative flex-shrink-0 bg-gray-200 overflow-hidden">
+                    <div onClick={() => router.push(`/partner/${partner._id}`)} key={partner._id} className="block group cursor-pointer">
+                      <div className="bg-panel border border-border-dark overflow-hidden transition-colors hover:border-gold flex h-28 relative">
+                        <div className="w-24 relative flex-shrink-0 bg-background overflow-hidden border-r border-border-dark">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img 
                             src={partner.imageUrl || "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&h=300&fit=crop"} 
                             alt={partner.laundryName}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
                           />
                         </div>
-                        <div className="p-3.5 flex flex-col justify-between flex-1 relative">
+                        <div className="p-4 flex flex-col justify-between flex-1 relative">
                           <div>
-                            <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1">{partner.laundryName}</h3>
-                            <div className="flex items-center gap-3 mt-1.5 text-xs font-semibold">
-                              <div className="flex items-center gap-1 text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded shadow-sm">
-                                <Star className="w-3.5 h-3.5 fill-current" />
+                            <h3 className="font-serif text-white group-hover:text-gold transition-colors text-sm tracking-wide line-clamp-1">{partner.laundryName}</h3>
+                            <div className="flex items-center gap-3 mt-1.5 text-[10px] font-light">
+                              <div className="flex items-center gap-1 text-gold">
+                                <Star className="w-3 h-3 fill-current" />
                                 <span>{partner.rating?.toFixed(1) || "5.0"}</span>
                               </div>
-                              <div className="flex items-center gap-1 text-gray-500">
-                                <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                              <div className="flex items-center gap-1 text-gray-500 uppercase tracking-widest">
+                                <MapPin className="w-3 h-3 text-gray-600" />
                                 <span className="line-clamp-1">{partner.city}</span>
                               </div>
                             </div>
                           </div>
                           <div className="flex justify-between items-center w-full">
-                            <span className="text-[10px] font-extrabold uppercase tracking-wide text-green-600 bg-green-50 px-2.5 py-1 rounded-md">Buka</span>
-                            <span className="text-xs font-bold text-blue-600 flex items-center gap-0.5">Pilih <ChevronRight className="w-3.5 h-3.5" /></span>
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white border border-white/20 px-2 py-0.5">Aktif</span>
                           </div>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   ))}
-                  <Link href={`/search?city=${searchCity}`} className="block w-full text-center mt-5 py-3.5 border-2 border-dashed border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all">
-                    Lihat Semua Mitra
-                  </Link>
+                  <button onClick={() => router.push(`/search?city=${searchCity}`)} className="block w-full text-center mt-6 py-4 border border-white/5 bg-white/5 text-[10px] uppercase font-bold tracking-[0.2em] text-gray-400 hover:text-white hover:border-gold transition-all">
+                    Akses Direktori Lengkap
+                  </button>
                 </div>
               ) : (
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 text-center text-sm text-gray-500 font-medium">
-                  Tidak ada mitra laundry di kota ini. Coba ubah pencarian di atas.
+                <div className="bg-panel border border-border-dark p-6 text-center text-xs text-gray-500 font-light tracking-wide">
+                  Tidak ada armada tersedia di koridor wilayah ini.
                 </div>
               )}
-
             </section>
           </div>
           
         </div>
       </main>
 
-      {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-100 px-6 py-3 flex justify-between items-center pb-safe z-50">
-        <Link href="/dashboard" className="flex flex-col items-center gap-1 text-blue-600">
-          <Home className="w-6 h-6" />
-          <span className="text-[10px] font-bold">Beranda</span>
-        </Link>
-        <Link href="/orders" className="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600 transition-colors">
-          <FileText className="w-6 h-6" />
-          <span className="text-[10px] font-semibold">Pesanan</span>
-        </Link>
-        <button className="flex justify-center items-center w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-full shadow-lg shadow-blue-500/30 transform -translate-y-6 hover:scale-105 transition-transform" aria-label="Buat Pesanan Baru">
-          <Search className="w-6 h-6" />
+      {/* Mobile Bottom Navigation Placeholder */}
+      <div className="md:hidden fixed bottom-0 w-full bg-panel border-t border-border-dark px-6 py-4 flex justify-between items-center z-50">
+        <button onClick={() => router.push("/dashboard")} className="flex flex-col items-center gap-1.5 text-gold">
+          <Home className="w-5 h-5" />
+          <span className="text-[9px] tracking-widest uppercase font-bold">Utama</span>
         </button>
-        <Link href="/profile" className="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600 transition-colors">
-          <User className="w-6 h-6" />
-          <span className="text-[10px] font-semibold">Profil</span>
-        </Link>
-        <button onClick={handleLogout} className="flex flex-col items-center gap-1 text-gray-400 hover:text-red-500 transition-colors">
-          <LogOut className="w-6 h-6" />
-          <span className="text-[10px] font-semibold">Keluar</span>
+        <button onClick={() => router.push("/orders")} className="flex flex-col items-center gap-1.5 text-gray-500 hover:text-white transition-colors">
+          <FileText className="w-5 h-5" />
+          <span className="text-[9px] tracking-widest uppercase font-light">Arsip</span>
+        </button>
+        <button className="flex justify-center items-center w-12 h-12 bg-gold text-background rounded-none border border-gold transform -translate-y-6 hover:bg-white transition-colors">
+          <Diamond className="w-5 h-5 fill-current" />
+        </button>
+        <button onClick={() => router.push("/profile")} className="flex flex-col items-center gap-1.5 text-gray-500 hover:text-white transition-colors">
+          <User className="w-5 h-5" />
+          <span className="text-[9px] tracking-widest uppercase font-light">Klien</span>
+        </button>
+        <button onClick={handleLogout} className="flex flex-col items-center gap-1.5 text-gray-500 hover:text-red-400 transition-colors">
+          <LogOut className="w-5 h-5" />
+          <span className="text-[9px] tracking-widest uppercase font-light">Keluar</span>
         </button>
       </div>
     </div>
