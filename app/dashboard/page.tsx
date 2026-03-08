@@ -107,8 +107,9 @@ export default function DashboardPage() {
       <header className="bg-panel border-b border-white/5 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <button onClick={() => router.push("/dashboard")} className="flex items-center gap-3 text-gold hover:text-white transition-colors">
-              <Diamond className="w-5 h-5 fill-current" />
+            <button onClick={() => router.push("/dashboard")} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icon.svg" alt="E-Laundry Logo" className="w-6 h-6 object-contain" />
               <span className="text-lg font-serif tracking-widest text-white hidden sm:block">E-LAUNDRY</span>
             </button>
             
@@ -313,8 +314,9 @@ export default function DashboardPage() {
           <FileText className="w-5 h-5" />
           <span className="text-[9px] tracking-widest uppercase font-light">Arsip</span>
         </button>
-        <button className="flex justify-center items-center w-12 h-12 bg-gold text-background rounded-none border border-gold transform -translate-y-6 hover:bg-white transition-colors">
-          <Diamond className="w-5 h-5 fill-current" />
+        <button className="flex justify-center items-center w-12 h-12 bg-gold text-background rounded-none border border-gold transform -translate-y-6 hover:bg-white transition-colors relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icon.svg" className="w-6 h-6 object-contain invert" alt="E-Laundry Logo Mobile" />
         </button>
         <button onClick={() => router.push("/profile")} className="flex flex-col items-center gap-1.5 text-gray-500 hover:text-white transition-colors">
           <User className="w-5 h-5" />

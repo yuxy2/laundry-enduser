@@ -85,8 +85,9 @@ export default function RegisterPage() {
           </Link>
 
           {/* Logo */}
-          <div className="flex items-center gap-3 mb-10 text-gold">
-            <Diamond className="w-6 h-6 fill-current" />
+          <div className="flex items-center gap-3 mb-10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon.svg" alt="E-Laundry Logo" className="w-7 h-7 object-contain" />
             <span className="text-xl font-serif tracking-widest text-white">E-LAUNDRY</span>
           </div>
 

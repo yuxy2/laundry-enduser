@@ -22,8 +22,9 @@ export default function Home() {
       <nav className={`fixed w-full z-50 transition-all duration-500 border-b border-white/5 ${scrolled ? "bg-background/95 backdrop-blur-md py-4 shadow-2xl shadow-black/50" : "bg-transparent py-6"}`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex justify-between items-center text-xs font-medium tracking-widest text-gray-300">
-            <Link href="/" className="flex-shrink-0 flex items-center gap-3 text-gold hover:text-white transition-colors">
-              <Diamond className="w-5 h-5 fill-current" />
+            <Link href="/" className="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition-opacity">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icon.svg" alt="E-Laundry Logo" className="w-6 h-6 object-contain" />
               <span className="text-xl font-serif tracking-widest text-white">E-LAUNDRY</span>
             </Link>
             
@@ -204,8 +205,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
             
             <div>
-              <Link href="/" className="flex items-center gap-3 text-gold mb-6 inline-flex">
-                <Diamond className="w-5 h-5 fill-current" />
+              <Link href="/" className="flex items-center gap-3 mb-6 inline-flex hover:opacity-80">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icon.svg" alt="E-Laundry Logo" className="w-6 h-6 object-contain" />
                 <span className="text-xl font-serif tracking-widest text-white">E-LAUNDRY</span>
               </Link>
               <p className="text-gray-500 text-sm leading-relaxed mb-8 max-w-xs font-light">
