@@ -161,7 +161,7 @@ export default function MyOrdersPage() {
                       <p className={`text-[9px] font-bold px-3 py-1 mb-4 inline-block uppercase tracking-[0.2em] border ${getStatusColor(order.status)}`}>
                         {getStatusText(order.status)}
                       </p>
-                      <h3 className="text-xl font-serif text-white tracking-wide group-hover:text-gold transition-colors">{order.laundry?.laundryName || "Entitas Anonim"}</h3>
+                      <h3 className="text-xl font-serif text-white tracking-wide group-hover:text-gold transition-colors">{`E-Laundry Hub ${order.laundry?.city || ""}`}</h3>
                     </div>
                     <span className="text-[10px] font-mono text-gray-500 tracking-widest uppercase bg-background px-3 py-1.5 border border-white/5">
                       REF / {order._id.substring(order._id.length - 8).toUpperCase()}

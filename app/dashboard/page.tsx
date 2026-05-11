@@ -178,7 +178,7 @@ export default function DashboardPage() {
                             <p className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] mb-2">
                               STAT: {getStatusText(order.status)}
                             </p>
-                            <h3 className="text-xl font-serif text-white">{order.laundry?.laundryName || "Mitra Kurasi Privat"}</h3>
+                            <h3 className="text-xl font-serif text-white">{`E-Laundry Hub ${order.laundry?.city || ""}`}</h3>
                           </div>
                           <span className="text-[10px] tracking-widest font-mono text-gray-500 bg-background px-3 py-1.5 border border-white/5">
                             ID/ {order._id.substring(order._id.length - 8).toUpperCase()}
@@ -263,14 +263,14 @@ export default function DashboardPage() {
                         <div className="w-24 relative flex-shrink-0 bg-background overflow-hidden border-r border-border-dark">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img 
-                            src={partner.imageUrl || "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&h=300&fit=crop"} 
-                            alt={partner.laundryName}
+                            src={"https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=800&q=80"}
+                            alt={`E-Laundry Hub ${partner.city || ""}`}
                             className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
                           />
                         </div>
                         <div className="p-4 flex flex-col justify-between flex-1 relative">
                           <div>
-                            <h3 className="font-serif text-white group-hover:text-gold transition-colors text-sm tracking-wide line-clamp-1">{partner.laundryName}</h3>
+                            <h3 className="font-serif text-white group-hover:text-gold transition-colors text-sm tracking-wide line-clamp-1">{`E-Laundry Hub ${partner.city || ""}`}</h3>
                             <div className="flex items-center gap-3 mt-1.5 text-[10px] font-light">
                               <div className="flex items-center gap-1 text-gold">
                                 <Star className="w-3 h-3 fill-current" />

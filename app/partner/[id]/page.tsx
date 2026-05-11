@@ -245,8 +245,8 @@ export default function PartnerDetailPage({ params }: { params: Promise<{ id: st
       <div className="relative h-72 sm:h-96 w-full bg-black">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
-          src={laundry.imageUrl || "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=1200&h=600&fit=crop"} 
-          alt={laundry.laundryName}
+          src={"https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=1200&h=600&fit=crop"} 
+          alt={`E-Laundry Hub ${laundry.city || ""}`}
           className="w-full h-full object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
@@ -255,10 +255,10 @@ export default function PartnerDetailPage({ params }: { params: Promise<{ id: st
           <div className="max-w-4xl mx-auto flex flex-col justify-end">
             <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
               <span className="w-8 h-[1px] bg-gold block"></span>
-              MITRA LISENSI
+              TITIK LAYANAN RESMI E-LAUNDRY
             </span>
             <h1 className="text-3xl sm:text-5xl font-serif text-white tracking-tight mb-6 leading-tight">
-              {laundry.laundryName}
+              {`E-Laundry Hub ${laundry.city || ""}`}
             </h1>
             <div className="flex flex-wrap items-center gap-6 text-xs sm:text-sm font-light text-gray-300">
               <span className="flex items-center gap-2 text-gold">
@@ -344,7 +344,7 @@ export default function PartnerDetailPage({ params }: { params: Promise<{ id: st
               <Diamond className="w-6 h-6 text-gold mb-6" />
               <h3 className="font-serif text-white mb-4 text-base tracking-wide">Kualifikasi Mitra</h3>
               <p className="text-gray-400 font-light text-sm leading-relaxed mb-8">
-                {laundry.description || "Entitas manajemen busana dengan standard privasi premium, menggunakan mesin mutakhir untuk penanganan khusus jenis bahan Anda."}
+                Layanan manajemen busana dengan standar kualitas premium E-Laundry. Kami memastikan pencucian terbaik dengan Quality Control ketat sebelum dikembalikan kepada Anda.
               </p>
               
               <div className="space-y-3">

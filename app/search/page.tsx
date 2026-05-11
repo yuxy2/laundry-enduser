@@ -83,7 +83,7 @@ function SearchContent() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-xl font-extrabold text-gray-900">
-            Mitra Laundry di "{city}"
+            Titik Layanan E-Laundry di "{city}"
           </h1>
           <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors shadow-sm">
             <Filter className="w-4 h-4" /> Filter
@@ -99,7 +99,7 @@ function SearchContent() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-10 h-10 animate-spin text-blue-600 mb-4" />
-            <p className="text-gray-500 font-medium">Mencari mitra terbaik...</p>
+            <p className="text-gray-500 font-medium">Mencari titik layanan...</p>
           </div>
         ) : laundries.length > 0 ? (
           <div className="space-y-4">
@@ -109,8 +109,8 @@ function SearchContent() {
                   <div className="w-full sm:w-48 h-48 sm:h-auto relative flex-shrink-0 bg-gray-200 overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
-                      src={laundry.imageUrl || "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=600&h=400&fit=crop"} 
-                      alt={laundry.laundryName}
+                      src={"https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=800&q=80"} 
+                      alt={`E-Laundry Hub ${laundry.city || ""}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-md text-xs font-bold text-gray-900 shadow-sm flex items-center gap-1">
@@ -121,7 +121,7 @@ function SearchContent() {
                   <div className="p-5 flex flex-col justify-between flex-1">
                     <div>
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{laundry.laundryName}</h3>
+                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{`E-Laundry Hub ${laundry.city || ""}`}</h3>
                         <span className="text-xs font-extrabold uppercase tracking-wide text-green-600 bg-green-50 px-2.5 py-1 rounded-md border border-green-100">Buka</span>
                       </div>
                       
@@ -159,7 +159,7 @@ function SearchContent() {
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Tidak ditemukan</h3>
             <p className="text-gray-500 font-medium max-w-sm mx-auto">
-              Maaf, belum ada mitra laundry yang tersedia di kota "{city}". Silakan coba cari di kota lain.
+              Maaf, titik layanan E-Laundry belum tersedia di kota "{city}". Silakan coba cari di kota lain.
             </p>
           </div>
         )}

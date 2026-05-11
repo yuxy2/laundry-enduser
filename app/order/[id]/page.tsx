@@ -184,11 +184,11 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         {/* Mitra / Laundry Detail */}
         <section className="bg-panel rounded-none border border-border-dark p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6 relative group overflow-hidden">
            {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={order.laundry?.imageUrl || "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=100&h=100&fit=crop"} alt="mitra" className="w-20 h-20 object-cover opacity-90 group-hover:scale-110 group-hover:opacity-100 transition-all duration-500 border border-border-dark shrink-0" />
+          <img src={"https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=200&q=80"} alt="mitra" className="w-20 h-20 object-cover opacity-90 group-hover:scale-110 group-hover:opacity-100 transition-all duration-500 border border-border-dark shrink-0" />
           
           <div className="flex-1">
             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2">Penanggung Jawab Kurasi</p>
-            <h3 className="text-xl font-serif text-white tracking-wide mb-2 group-hover:text-gold transition-colors">{order.laundry?.laundryName || "Mitra Anonim"}</h3>
+            <h3 className="text-xl font-serif text-white tracking-wide mb-2 group-hover:text-gold transition-colors">{`E-Laundry Hub ${order.laundry?.city || ""}`}</h3>
             <p className="text-xs text-gray-400 font-light flex items-center gap-2 uppercase tracking-widest">
               <MapPin className="w-3 h-3 text-gold" /> {order.laundry?.city}
             </p>
