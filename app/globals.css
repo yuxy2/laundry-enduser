@@ -1,29 +1,309 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #090a0f;
-  --foreground: #f4f4f5;
-  --gold-primary: #cba871;
-  --gold-hover: #b8935b;
-  --panel-bg: #12141d;
-  --border-color: #2a2d3d;
+  /* ── Aurora Theme — Brighter variant ────────────── */
+  --background: #0f1629;
+  --foreground: #f0f2ff;
+  --accent-1: #00e5b0;        /* Bright Emerald */
+  --accent-1-hover: #00c99a;
+  --accent-2: #8b5cf6;        /* Vivid Violet */
+  --accent-3: #f472b6;        /* Hot Pink */
+  --accent-4: #fbbf24;        /* Gold Amber */
+  --panel-bg: #1a2236;
+  --panel-bg-light: #212d45;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-glow: rgba(0, 229, 176, 0.2);
+  --glass-bg: rgba(26, 34, 54, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.12);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-gold: var(--gold-primary);
-  --color-gold-hover: var(--gold-hover);
+  --color-accent: var(--accent-1);
+  --color-accent-hover: var(--accent-1-hover);
+  --color-accent2: var(--accent-2);
+  --color-accent3: var(--accent-3);
+  --color-accent4: var(--accent-4);
   --color-panel: var(--panel-bg);
-  --color-border-dark: var(--border-color);
-  --font-serif: 'Playfair Display', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-panel-light: var(--panel-bg-light);
+  --color-border-subtle: var(--border-color);
+  --color-border-glow: var(--border-glow);
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --font-display: 'Outfit', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
 }
+
+/* ── Scrollbar ──────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 229, 176, 0.3) transparent;
+}
+*::-webkit-scrollbar { width: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: rgba(0, 229, 176, 0.3); border-radius: 999px; }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Animations ─────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes text-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(0,229,176,0.1) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+.animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+.animate-slide-up { animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-fade-in { animation: fade-in 0.5s ease forwards; }
+.animate-scale-in { animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-gradient 4s ease infinite;
+}
+
+/* ── Glassmorphism Card ─────────────────────────── */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 229, 176, 0.25);
+  box-shadow: 0 8px 40px rgba(0, 229, 176, 0.1), inset 0 1px 0 rgba(255,255,255,0.06);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════
+   BUTTONS — NO !important on generic button reset!
+   ═══════════════════════════════════════════════════ */
+
+/* Primary CTA Button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-1), #00c99a) !important;
+  color: #0f1629 !important;
+  font-weight: 700 !important;
+  border-radius: 14px !important;
+  padding: 14px 32px !important;
+  font-size: 13px !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 20px rgba(0, 229, 176, 0.3) !important;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px rgba(0, 229, 176, 0.5) !important;
+  background: linear-gradient(135deg, #00f5c0, #00d4aa) !important;
+}
+
+.btn-primary:active {
+  transform: translateY(0px) !important;
+}
+
+/* Outline Button */
+.btn-outline {
+  background: transparent !important;
+  color: var(--foreground) !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+  padding: 14px 32px !important;
+  font-size: 13px !important;
+  letter-spacing: 0.03em;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer !important;
+  box-shadow: none !important;
+}
+
+.btn-outline:hover {
+  border-color: var(--accent-1) !important;
+  color: var(--accent-1) !important;
+  background: rgba(0, 229, 176, 0.08) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ── Aurora Background Effect ───────────────────── */
+.aurora-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.aurora-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 20% 50%, rgba(0, 229, 176, 0.1) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(244, 114, 182, 0.06) 0%, transparent 50%);
+  animation: gradient-shift 15s ease infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Glow Orbs ──────────────────────────────────── */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-teal { background: rgba(0, 229, 176, 0.18); }
+.glow-violet { background: rgba(139, 92, 246, 0.15); }
+.glow-pink { background: rgba(244, 114, 182, 0.12); }
+
+/* ── Input Styles ───────────────────────────────── */
+input, textarea, select {
+  background: rgba(26, 34, 54, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 14px !important;
+  color: var(--foreground) !important;
+  padding: 14px 18px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  border-color: var(--accent-1) !important;
+  box-shadow: 0 0 0 3px rgba(0, 229, 176, 0.12), 0 0 20px rgba(0, 229, 176, 0.06) !important;
+  background: rgba(26, 34, 54, 1) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* ── Images ─────────────────────────────────────── */
+img {
+  border-radius: 16px !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ── Nav glassmorphism ──────────────────────────── */
+nav {
+  background: rgba(15, 22, 41, 0.8) !important;
+  backdrop-filter: blur(20px) saturate(1.5) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.5) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ── Misc TW class overrides ────────────────────── */
+.text-gray-900 { color: #f0f2ff !important; }
+.text-gray-700, .text-gray-600 { color: rgba(240, 242, 255, 0.7) !important; }
+.text-gray-500 { color: rgba(240, 242, 255, 0.5) !important; }
+.border-gray-200, .border-gray-100 { border-color: rgba(255, 255, 255, 0.08) !important; }
+
+/* ── Selection ──────────────────────────────────── */
+::selection {
+  background: var(--accent-1);
+  color: var(--background);
+}
+
+/* ── Skeleton loader ────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 12px;
 }

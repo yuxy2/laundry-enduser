@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "E-Laundry VIP",
-  description: "Portal Manajemen Perawatan Busana Premium",
+  title: "E-Laundry — Premium Garment Care",
+  description: "Platform perawatan busana premium dengan standar kualitas tertinggi. Cuci, setrika, dan perawatan kustom untuk gaya hidup modern Anda.",
   icons: {
     icon: "/icon.svg",
   },
@@ -26,9 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased"
+        suppressHydrationWarning
       >
         {children}
       </body>

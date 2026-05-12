@@ -1,19 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Mail, Lock, Loader2, Diamond, ArrowRight } from "lucide-react";
+import { Mail, Lock, Loader2, Sparkles, ArrowLeft, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
+  const [mounted, setMounted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,7 +46,7 @@ export default function LoginPage() {
 
       const token = data.token || (data.data && data.data.token);
       const user = data.user || (data.data && data.data.user);
-      
+
       if (token) {
         localStorage.setItem("userToken", token);
         localStorage.setItem("userData", JSON.stringify(user));
@@ -56,42 +62,48 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-background text-foreground font-sans selection:bg-gold selection:text-background">
+    <div className="min-h-screen flex bg-background text-foreground font-sans relative overflow-hidden">
+      {/* Background Glow Effects */}
+      <div className="glow-orb glow-teal w-[600px] h-[600px] -top-40 -right-40 animate-pulse-glow fixed"></div>
+      <div className="glow-orb glow-violet w-[400px] h-[400px] bottom-0 left-0 animate-pulse-glow fixed" style={{ animationDelay: '2s' }}></div>
+
       {/* Left side - Form */}
-      <div className="flex-1 flex flex-col justify-center px-6 sm:px-12 md:px-24 relative z-10 w-full lg:max-w-xl xl:max-w-2xl border-r border-white/5">
+      <div className={`flex-1 flex flex-col justify-center px-6 sm:px-12 md:px-20 relative z-10 w-full lg:max-w-xl xl:max-w-2xl ${mounted ? 'animate-slide-up' : 'opacity-0'}`}>
         <div className="w-full max-w-md mx-auto">
-          {/* Back Home */}
-          <Link href="/" className="inline-flex items-center gap-2 text-gold hover:text-white transition-colors text-xs tracking-widest uppercase mb-12">
-            <ArrowRight className="w-4 h-4 rotate-180" />
-            Kembali ke Beranda
+          {/* Back */}
+          <Link href="/" className="inline-flex items-center gap-2 text-foreground/70 hover:text-accent transition-colors text-sm mb-10 group">
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Kembali
           </Link>
 
           {/* Logo */}
           <div className="flex items-center gap-3 mb-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon.svg" alt="E-Laundry Logo" className="w-7 h-7 object-contain" />
-            <span className="text-xl font-serif tracking-widest text-white">E-LAUNDRY</span>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-accent to-accent2 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-background" />
+            </div>
+            <span className="text-2xl font-display font-bold">E-Laundry</span>
           </div>
 
-          <h1 className="text-3xl lg:text-4xl font-serif text-white mb-2">
-            Portal Pribadi
+          <h1 className="text-3xl lg:text-4xl font-display font-bold mb-3">
+            Selamat Datang <span className="text-gradient">Kembali</span>
           </h1>
-          <p className="text-gray-400 mb-8 font-light text-sm md:text-base">
-            Masuk dengan kredensial Anda untuk mengakses layanan manajerial pakaian eksklusif.
+          <p className="text-foreground/70 mb-10 font-light">
+            Masuk untuk mengakses layanan perawatan busana eksklusif Anda.
           </p>
 
           <form onSubmit={handleLogin} className="space-y-5">
             {error && (
-              <div className="p-4 border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-light">
+              <div className="p-4 rounded-2xl border border-red-500/20 bg-red-500/5 text-red-400 text-sm font-light flex items-start gap-3">
+                <span className="text-red-400 mt-0.5">⚠</span>
                 {error}
               </div>
             )}
 
             <div className="space-y-2">
-              <label className="text-xs uppercase tracking-widest font-semibold text-gray-500">Email Akses</label>
+              <label className="text-sm font-medium text-foreground/60">Email</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-600 group-focus-within:text-gold transition-colors">
-                  <Mail className="h-4 w-4" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-foreground/60 group-focus-within:text-accent transition-colors">
+                  <Mail className="h-5 w-5" />
                 </div>
                 <input
                   type="email"
@@ -99,7 +111,7 @@ export default function LoginPage() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-12 pr-4 py-3 bg-panel border border-border-dark text-white placeholder-gray-600 focus:outline-none focus:border-gold transition-colors font-light text-sm"
+                  className="w-full !pl-12 !pr-4"
                   placeholder="nama@email.com"
                 />
               </div>
@@ -107,64 +119,78 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs uppercase tracking-widest font-semibold text-gray-500">Kata Sandi</label>
-                <Link href="/forgot-password" className="text-xs text-gold hover:text-white transition-colors">
+                <label className="text-sm font-medium text-foreground/60">Kata Sandi</label>
+                <Link href="/forgot-password" className="text-xs text-accent hover:text-accent-hover transition-colors">
                   Lupa kata sandi?
                 </Link>
               </div>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-600 group-focus-within:text-gold transition-colors">
-                  <Lock className="h-4 w-4" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-foreground/60 group-focus-within:text-accent transition-colors">
+                  <Lock className="h-5 w-5" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full pl-12 pr-4 py-3 bg-panel border border-border-dark text-white placeholder-gray-600 focus:outline-none focus:border-gold transition-colors font-light text-sm"
+                  className="w-full !pl-12 !pr-12"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-foreground/60 hover:text-accent transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold hover:bg-gold-hover text-background py-4 flex items-center justify-center uppercase tracking-widest text-xs font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+              className="w-full btn-primary !mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                "Otorisasi Masuk"
+                <>
+                  <Sparkles className="w-4 h-4" />
+                  Masuk ke Portal
+                </>
               )}
             </button>
           </form>
 
-          <p className="mt-10 text-center text-xs text-gray-500 tracking-wide">
-            Belum menjadi klien?{" "}
-            <Link href="/register" className="text-gold hover:text-white transition-colors uppercase font-bold">
-              Daftar Layanan
+          <p className="mt-10 text-center text-sm text-foreground/60">
+            Belum punya akun?{" "}
+            <Link href="/register" className="text-accent hover:text-accent-hover transition-colors font-semibold">
+              Daftar Sekarang
             </Link>
           </p>
         </div>
       </div>
 
-      {/* Right side - Image/Gradient banner */}
-      <div className="hidden lg:flex flex-1 relative bg-black items-center justify-center">
-        <img 
-          src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1000&q=80" 
-          alt="Luxury clothes rack"
-          className="absolute w-full h-full object-cover opacity-50 grayscale-[30%] contrast-125"
+      {/* Right side - Image */}
+      <div className="hidden lg:flex flex-1 relative items-center justify-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/hero-laundry.png"
+          alt="Premium garment care"
+          className="absolute w-full h-full object-cover opacity-30 !rounded-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/40 to-black/20"></div>
-        
-        <div className="relative z-10 max-w-sm text-center">
-          <Diamond className="w-10 h-10 text-gold mx-auto mb-6" />
-          <h2 className="text-3xl font-serif text-white mb-4">Layanan Pramutamu Privat</h2>
-          <div className="w-12 h-[1px] bg-gold mx-auto mb-6"></div>
-          <p className="text-gray-300 font-light text-sm leading-relaxed">
-            Akses ke riwayat layanan, jadwal penjemputan, dan preferensi penanganan pakaian kustom eksklusif khusus untuk akun Anda.
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+
+        <div className={`relative z-10 max-w-sm text-center ${mounted ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: '0.3s' }}>
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-accent to-accent2 mx-auto mb-8 flex items-center justify-center animate-float">
+            <Sparkles className="w-10 h-10 text-background" />
+          </div>
+          <h2 className="text-3xl font-display font-bold text-foreground mb-4">
+            Layanan Pramutamu <span className="text-gradient">Privat</span>
+          </h2>
+          <p className="text-foreground/70 font-light text-sm leading-relaxed">
+            Akses riwayat layanan, jadwal penjemputan, dan preferensi penanganan pakaian kustom eksklusif khusus untuk akun Anda.
           </p>
         </div>
       </div>

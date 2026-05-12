@@ -3,18 +3,19 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { 
-  ArrowLeft, User, Mail, MapPin, Phone, LogOut, 
-  Settings, Shield, Diamond, Loader2
+import {
+  ArrowLeft, User, Mail, MapPin, Phone, LogOut,
+  Settings, Shield, Sparkles, Loader2, ChevronRight
 } from "lucide-react";
 
 export default function ProfilePage() {
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Authentication Check
+    setMounted(true);
     const token = localStorage.getItem("userToken");
     const storedUser = localStorage.getItem("userData");
 
@@ -30,8 +31,7 @@ export default function ProfilePage() {
         console.error("Gagal membaca profil");
       }
     }
-    
-    // Simulate slight loading for premium effect
+
     setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -40,144 +40,113 @@ export default function ProfilePage() {
   const handleLogout = () => {
     localStorage.removeItem("userToken");
     localStorage.removeItem("userData");
-    router.push("/login"); 
+    router.push("/login");
   };
 
-  // Remove top loading return
+  const infoItems = [
+    { icon: Mail, label: "Email", value: userData?.email || "Tidak tersedia", color: "from-accent to-accent-hover" },
+    { icon: Phone, label: "Telepon", value: userData?.phone || "Tidak tersedia", color: "from-accent2 to-purple-600" },
+    { icon: MapPin, label: `Alamat (${userData?.city || "Kota"})`, value: userData?.addressLine1 || "Belum ditambahkan", color: "from-accent3 to-pink-600" },
+  ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans pb-20 selection:bg-gold selection:text-background flex flex-col">
+    <div className="min-h-screen bg-background text-foreground font-sans pb-20 flex flex-col relative">
+      <div className="glow-orb glow-teal w-[400px] h-[400px] -top-40 -left-20 animate-pulse-glow fixed opacity-30"></div>
+
       {/* Header */}
-      <header className="bg-panel border-b border-border-dark sticky top-0 z-40">
+      <header className="sticky top-0 z-40 border-b border-white/10" style={{ background: 'rgba(10, 14, 26, 0.8)', backdropFilter: 'blur(20px)' }}>
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center gap-4 h-20">
-            <button 
-              onClick={() => router.push("/dashboard")}
-              className="p-2 -ml-2 text-gold hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
+          <div className="flex items-center gap-4 h-16">
+            <button onClick={() => router.push("/dashboard")} className="p-2 -ml-2 text-foreground/70 hover:text-accent transition-colors group">
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             </button>
-            <h1 className="text-lg font-serif tracking-widest uppercase text-white flex-1">
-              Kredensial Klien
-            </h1>
+            <h1 className="text-lg font-display font-semibold flex-1">Profil Saya</h1>
           </div>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 lg:px-8 py-10 flex-1 w-full">
+      <main className={`max-w-3xl mx-auto px-6 lg:px-8 py-10 flex-1 w-full ${mounted ? 'animate-fade-in' : 'opacity-0'}`}>
         {loading ? (
-          <div className="animate-pulse space-y-10 w-full">
-            <div className="bg-panel border border-border-dark h-48"></div>
-            <div className="space-y-4">
-              <div className="h-4 bg-white/5 w-40 mb-6"></div>
+          <div className="space-y-6">
+            <div className="skeleton h-52 rounded-3xl"></div>
+            <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-panel border border-border-dark h-20"></div>
+                <div key={i} className="skeleton h-20 rounded-2xl"></div>
               ))}
             </div>
           </div>
         ) : (
           <>
-        {/* Profile Card */}
-        <section className="bg-panel border border-border-dark p-8 sm:p-12 mb-10 relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl opacity-50"></div>
-          
-          <div className="flex flex-col sm:flex-row items-center gap-8 relative z-10">
-            <div className="w-28 h-28 border border-gold flex items-center justify-center bg-background shrink-0">
-               {userData?.name?.charAt(0).toUpperCase() ? (
-                 <span className="text-5xl font-serif text-gold">{userData.name.charAt(0).toUpperCase()}</span>
-               ) : (
-                 <User className="w-10 h-10 text-gold" />
-               )}
-            </div>
-            
-            <div className="text-center sm:text-left">
-              <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-2 block">Identitas Personal</span>
-              <h2 className="text-3xl font-serif text-white tracking-wide mb-2">{userData?.name || "Klien Premium"}</h2>
-              <p className="text-sm font-light text-gray-400 flex items-center justify-center sm:justify-start gap-2">
-                Hak Akses: <span className="uppercase tracking-widest text-white">{userData?.role || "GUEST"}</span>
-              </p>
-            </div>
-          </div>
-        </section>
+            {/* Profile Card */}
+            <section className="glass-card !rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden">
+              <div className="glow-orb glow-teal w-[200px] h-[200px] -top-10 -left-10 animate-pulse-glow"></div>
 
-        {/* Data Formulir */}
-        <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-6 px-1 flex items-center gap-3">
-           <span className="w-6 h-[1px] bg-border-dark block"></span>
-           Entitas Kontak & Demografi
-        </h3>
+              <div className="flex flex-col sm:flex-row items-center gap-8 relative z-10">
+                <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-accent to-accent2 flex items-center justify-center shrink-0 shadow-lg shadow-accent/20">
+                  {userData?.name?.charAt(0).toUpperCase() ? (
+                    <span className="text-4xl font-display font-bold text-background">{userData.name.charAt(0).toUpperCase()}</span>
+                  ) : (
+                    <User className="w-10 h-10 text-background" />
+                  )}
+                </div>
 
-        <section className="space-y-4 mb-12">
-          
-          <div className="bg-panel border border-border-dark p-6 flex items-start gap-4 transition-colors hover:border-white/20">
-            <div className="w-8 h-8 rounded-none bg-background border border-border-dark flex items-center justify-center text-gray-400 shrink-0">
-               <Mail className="w-4 h-4" />
-            </div>
-            <div className="flex-1 border-l border-border-dark pl-5">
-              <p className="text-[10px] font-bold text-gold uppercase tracking-widest mb-1">Email Resmi</p>
-              <p className="text-base font-light text-white tracking-wide">{userData?.email || "Tidak ditautkan"}</p>
-            </div>
-          </div>
-
-          <div className="bg-panel border border-border-dark p-6 flex items-start gap-4 transition-colors hover:border-white/20">
-            <div className="w-8 h-8 rounded-none bg-background border border-border-dark flex items-center justify-center text-gray-400 shrink-0">
-               <Phone className="w-4 h-4" />
-            </div>
-            <div className="flex-1 border-l border-border-dark pl-5">
-              <p className="text-[10px] font-bold text-gold uppercase tracking-widest mb-1">Narahubung (Telepon)</p>
-              <p className="text-base font-light text-white tracking-wide">{userData?.phone || "Nomor Privat"}</p>
-            </div>
-          </div>
-
-          <div className="bg-panel border border-border-dark p-6 flex items-start gap-4 transition-colors hover:border-white/20">
-            <div className="w-8 h-8 rounded-none bg-background border border-border-dark flex items-center justify-center text-gray-400 shrink-0">
-               <MapPin className="w-4 h-4" />
-            </div>
-            <div className="flex-1 border-l border-border-dark pl-5">
-              <p className="text-[10px] font-bold text-gold uppercase tracking-widest mb-2">Dominasi Wilayah ({userData?.city || "Kota Tidak Diketahui"})</p>
-              <p className="text-sm font-light text-gray-300 leading-relaxed italic">
-                {userData?.addressLine1 ? `"${userData.addressLine1}"` : "Informasi titik alamat lengkap belum didistribusikan ke dalam database prioritas."}
-              </p>
-            </div>
-          </div>
-          
-        </section>
-
-        {/* Sekuriti / Preferensi */}
-        <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-6 px-1 flex items-center gap-3">
-           <span className="w-6 h-[1px] bg-border-dark block"></span>
-           Otorisasi & Keamanan
-        </h3>
-
-        <section className="bg-panel border border-border-dark overflow-hidden mb-12">
-           <button className="w-full text-left p-6 flex items-center justify-between border-b border-border-dark hover:bg-white/5 transition-colors group">
-              <div className="flex items-center gap-4">
-                 <Shield className="w-5 h-5 text-gray-500 group-hover:text-gold transition-colors" />
-                 <span className="text-sm font-light text-white tracking-wide">Pembaruan Kode Enkripsi (Katasandi)</span>
+                <div className="text-center sm:text-left">
+                  <span className="text-xs font-semibold text-accent tracking-wider uppercase mb-2 block">Akun Personal</span>
+                  <h2 className="text-2xl sm:text-3xl font-display font-bold mb-2">{userData?.name || "Pengguna"}</h2>
+                  <p className="text-sm text-foreground/60 flex items-center justify-center sm:justify-start gap-2">
+                    Role: <span className="text-accent font-semibold capitalize">{userData?.role || "Customer"}</span>
+                  </p>
+                </div>
               </div>
-              <ArrowLeft className="w-4 h-4 text-gray-600 rotate-180" />
-           </button>
-           <button className="w-full text-left p-6 flex items-center justify-between hover:bg-white/5 transition-colors group">
-              <div className="flex items-center gap-4">
-                 <Settings className="w-5 h-5 text-gray-500 group-hover:text-gold transition-colors" />
-                 <span className="text-sm font-light text-white tracking-wide">Preferensi Notifikasi Terbatas</span>
-              </div>
-              <ArrowLeft className="w-4 h-4 text-gray-600 rotate-180" />
-           </button>
-        </section>
+            </section>
 
-        <button 
-           onClick={handleLogout}
-           className="w-full p-5 bg-red-900/20 border border-red-900/50 flex justify-center items-center gap-3 text-red-500 uppercase tracking-widest text-[10px] font-bold hover:bg-red-900/40 hover:text-red-400 transition-colors"
-        >
-          <LogOut className="w-4 h-4" /> Tutup Sesi Portal Personal
-        </button>
+            {/* Info Cards */}
+            <h3 className="text-sm font-display font-semibold text-foreground/70 mb-4 px-1">Informasi Kontak</h3>
+            <section className="space-y-3 mb-8">
+              {infoItems.map((item, idx) => (
+                <div key={idx} className="glass-card !rounded-2xl p-5 flex items-start gap-4">
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shrink-0`}>
+                    <item.icon className="w-5 h-5 text-background" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">{item.label}</p>
+                    <p className="text-sm text-foreground/70 font-light">{item.value}</p>
+                  </div>
+                </div>
+              ))}
+            </section>
+
+            {/* Settings */}
+            <h3 className="text-sm font-display font-semibold text-foreground/70 mb-4 px-1">Pengaturan</h3>
+            <section className="glass-card !rounded-2xl overflow-hidden mb-8">
+              {[
+                { icon: Shield, label: "Ubah Kata Sandi" },
+                { icon: Settings, label: "Preferensi Notifikasi" },
+              ].map((item, idx) => (
+                <button key={idx} className={`w-full text-left p-5 flex items-center justify-between hover:bg-white/10 transition-colors group ${idx !== 1 ? 'border-b border-white/10' : ''}`}>
+                  <div className="flex items-center gap-4">
+                    <item.icon className="w-5 h-5 text-foreground/60 group-hover:text-accent transition-colors" />
+                    <span className="text-sm text-foreground/70 group-hover:text-foreground transition-colors">{item.label}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-foreground/75 group-hover:text-accent group-hover:translate-x-1 transition-all" />
+                </button>
+              ))}
+            </section>
+
+            {/* Logout */}
+            <button
+              onClick={handleLogout}
+              className="w-full p-5 rounded-2xl bg-red-500/5 border border-red-500/10 flex justify-center items-center gap-3 text-red-400 text-sm font-semibold hover:bg-red-500/10 hover:border-red-500/20 transition-all"
+            >
+              <LogOut className="w-4 h-4" /> Keluar dari Akun
+            </button>
           </>
         )}
       </main>
 
-      <footer className="py-8 pb-32 text-center text-gray-600 border-t border-white/5 mt-auto">
-         <Diamond className="w-4 h-4 mx-auto mb-3 opacity-50" />
-         <p className="text-[10px] uppercase tracking-widest">E-LAUNDRY CLIENT PORTAL • VER 1.0</p>
+      <footer className="py-8 pb-32 text-center border-t border-white/10 mt-auto">
+        <Sparkles className="w-4 h-4 mx-auto mb-3 text-accent/30" />
+        <p className="text-xs text-foreground/70 font-light">E-LAUNDRY • v2.0</p>
       </footer>
     </div>
   );
