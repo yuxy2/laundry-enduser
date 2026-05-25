@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft, User, Mail, MapPin, Phone, LogOut,
-  Settings, Shield, Sparkles, Loader2, ChevronRight
+  Settings, Shield, Sparkles, Loader2, ChevronRight, Shirt
 } from "lucide-react";
 
 export default function ProfilePage() {
@@ -32,9 +32,23 @@ export default function ProfilePage() {
       }
     }
 
-    setTimeout(() => {
+    const fetchProfile = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://laundry-app-one-theta.vercel.app";
+        const res = await fetch(`${apiUrl}/api/my/user`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const uProfile = data.data || data;
+          setUserData(uProfile);
+          localStorage.setItem("userData", JSON.stringify(uProfile));
+        }
+      } catch (e) { /* ignore */ }
       setLoading(false);
-    }, 500);
+    };
+
+    fetchProfile();
   }, [router]);
 
   const handleLogout = () => {
@@ -44,28 +58,27 @@ export default function ProfilePage() {
   };
 
   const infoItems = [
-    { icon: Mail, label: "Email", value: userData?.email || "Tidak tersedia", color: "from-accent to-accent-hover" },
-    { icon: Phone, label: "Telepon", value: userData?.phone || "Tidak tersedia", color: "from-accent2 to-purple-600" },
-    { icon: MapPin, label: `Alamat (${userData?.city || "Kota"})`, value: userData?.addressLine1 || "Belum ditambahkan", color: "from-accent3 to-pink-600" },
+    { icon: Mail, label: "Email", value: userData?.email || "Tidak tersedia", color: "bg-[#E96A44]/10 text-[#E96A44]" },
+    { icon: Phone, label: "Telepon", value: userData?.phone || "Tidak tersedia", color: "bg-[#F5B842]/10 text-[#F5B842]" },
+    { icon: MapPin, label: `Alamat (${userData?.city || "Kota"})`, value: userData?.addressLine1 || "Belum ditambahkan", color: "bg-[#1E70D6]/10 text-[#1E70D6]" },
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans pb-20 flex flex-col relative">
-      <div className="glow-orb glow-teal w-[400px] h-[400px] -top-40 -left-20 animate-pulse-glow fixed opacity-30"></div>
-
+    <div className="min-h-screen bg-white text-foreground font-sans pb-20 flex flex-col relative">
+      
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-white/10" style={{ background: 'rgba(10, 14, 26, 0.8)', backdropFilter: 'blur(20px)' }}>
+      <header className="sticky top-0 z-40 border-b border-peach-border bg-peach-light/95 backdrop-blur-md">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <div className="flex items-center gap-4 h-16">
             <button onClick={() => router.push("/dashboard")} className="p-2 -ml-2 text-foreground/70 hover:text-accent transition-colors group">
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             </button>
-            <h1 className="text-lg font-display font-semibold flex-1">Profil Saya</h1>
+            <h1 className="text-lg font-display font-bold flex-1 text-left">Profil Saya</h1>
           </div>
         </div>
       </header>
-
-      <main className={`max-w-3xl mx-auto px-6 lg:px-8 py-10 flex-1 w-full ${mounted ? 'animate-fade-in' : 'opacity-0'}`}>
+ 
+      <main className={`max-w-3xl mx-auto px-6 lg:px-8 py-10 flex-1 w-full text-left ${mounted ? 'animate-fade-in' : 'opacity-0'}`}>
         {loading ? (
           <div className="space-y-6">
             <div className="skeleton h-52 rounded-3xl"></div>
@@ -78,57 +91,94 @@ export default function ProfilePage() {
         ) : (
           <>
             {/* Profile Card */}
-            <section className="glass-card !rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden">
-              <div className="glow-orb glow-teal w-[200px] h-[200px] -top-10 -left-10 animate-pulse-glow"></div>
-
+            <section className="bg-white border border-peach-border rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden shadow-2xs">
               <div className="flex flex-col sm:flex-row items-center gap-8 relative z-10">
-                <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-accent to-accent2 flex items-center justify-center shrink-0 shadow-lg shadow-accent/20">
+                <div className="w-24 h-24 rounded-3xl bg-accent flex items-center justify-center shrink-0 shadow-md text-white">
                   {userData?.name?.charAt(0).toUpperCase() ? (
-                    <span className="text-4xl font-display font-bold text-background">{userData.name.charAt(0).toUpperCase()}</span>
+                    <span className="text-4xl font-display font-extrabold">{userData.name.charAt(0).toUpperCase()}</span>
                   ) : (
-                    <User className="w-10 h-10 text-background" />
+                    <User className="w-10 h-10" />
                   )}
                 </div>
 
                 <div className="text-center sm:text-left">
-                  <span className="text-xs font-semibold text-accent tracking-wider uppercase mb-2 block">Akun Personal</span>
-                  <h2 className="text-2xl sm:text-3xl font-display font-bold mb-2">{userData?.name || "Pengguna"}</h2>
-                  <p className="text-sm text-foreground/60 flex items-center justify-center sm:justify-start gap-2">
-                    Role: <span className="text-accent font-semibold capitalize">{userData?.role || "Customer"}</span>
+                  <span className="text-xs font-bold text-accent tracking-wider uppercase mb-1.5 block">Akun Personal</span>
+                  <h2 className="text-2xl sm:text-3xl font-display font-extrabold mb-1.5 text-foreground leading-tight">{userData?.name || "Pengguna"}</h2>
+                  <p className="text-sm text-foreground/60 flex items-center justify-center sm:justify-start gap-2 font-semibold">
+                    Role: <span className="text-accent font-bold capitalize">{userData?.role || "Customer"}</span>
                   </p>
                 </div>
               </div>
             </section>
 
+            {/* Membership Info Card */}
+            {userData?.isMember && (
+              <section className="bg-gradient-to-br from-peach-light to-white border border-peach-border rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden shadow-2xs">
+                <div className="absolute right-[-20px] top-[-20px] w-24 h-24 bg-accent/5 rounded-full blur-lg pointer-events-none"></div>
+                <div className="flex items-center gap-3 mb-6 text-foreground font-display font-extrabold text-base">
+                  <Sparkles className="w-5 h-5 text-accent" />
+                  Membership Bulanan
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-1">
+                    <p className="text-xs text-foreground/40 font-bold uppercase tracking-wider">Tipe Member</p>
+                    <p className="font-display font-extrabold text-lg text-accent uppercase tracking-wide">
+                      {userData.memberType === "premium" ? "Premium Plan" : "Regular Plan"}
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs text-foreground/40 font-bold uppercase tracking-wider">Masa Berlaku</p>
+                    <p className="font-semibold text-sm text-foreground/80">
+                      Hingga {new Date(userData.memberExpiresAt).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}
+                    </p>
+                  </div>
+                  <div className="sm:col-span-2 space-y-2.5">
+                    <div className="flex justify-between text-xs font-bold text-foreground/75">
+                      <span>Sisa Kuota Cuci Bulanan:</span>
+                      <span className="text-accent">{userData.quotaRemaining?.toFixed(1) || "0.0"} / 70.0 Kg</span>
+                    </div>
+                    {/* Progress Bar */}
+                    <div className="w-full h-2 bg-peach-dark rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-accent rounded-full transition-all duration-500" 
+                        style={{ width: `${Math.min(100, ((userData.quotaRemaining || 0) / 70) * 100)}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* Info Cards */}
-            <h3 className="text-sm font-display font-semibold text-foreground/70 mb-4 px-1">Informasi Kontak</h3>
+            <h3 className="text-sm font-display font-bold text-foreground/60 mb-4 px-1 uppercase tracking-wider">Informasi Kontak</h3>
             <section className="space-y-3 mb-8">
               {infoItems.map((item, idx) => (
-                <div key={idx} className="glass-card !rounded-2xl p-5 flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shrink-0`}>
-                    <item.icon className="w-5 h-5 text-background" />
+                <div key={idx} className="bg-white border border-peach-border rounded-2xl p-5 flex items-start gap-4 shadow-2xs">
+                  <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center shrink-0`}>
+                    <item.icon className="w-5 h-5" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">{item.label}</p>
-                    <p className="text-sm text-foreground/70 font-light">{item.value}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-foreground/50 uppercase tracking-wider mb-1">{item.label}</p>
+                    <p className="text-sm text-foreground/75 font-semibold truncate">{item.value}</p>
                   </div>
                 </div>
               ))}
             </section>
 
             {/* Settings */}
-            <h3 className="text-sm font-display font-semibold text-foreground/70 mb-4 px-1">Pengaturan</h3>
-            <section className="glass-card !rounded-2xl overflow-hidden mb-8">
+            <h3 className="text-sm font-display font-bold text-foreground/60 mb-4 px-1 uppercase tracking-wider">Pengaturan</h3>
+            <section className="bg-white border border-peach-border rounded-2xl overflow-hidden mb-8 shadow-2xs">
               {[
                 { icon: Shield, label: "Ubah Kata Sandi" },
                 { icon: Settings, label: "Preferensi Notifikasi" },
               ].map((item, idx) => (
-                <button key={idx} className={`w-full text-left p-5 flex items-center justify-between hover:bg-white/10 transition-colors group ${idx !== 1 ? 'border-b border-white/10' : ''}`}>
+                <button key={idx} className={`w-full text-left p-5 flex items-center justify-between hover:bg-peach-light/50 transition-colors group ${idx !== 1 ? 'border-b border-peach-border' : ''}`}>
                   <div className="flex items-center gap-4">
-                    <item.icon className="w-5 h-5 text-foreground/60 group-hover:text-accent transition-colors" />
-                    <span className="text-sm text-foreground/70 group-hover:text-foreground transition-colors">{item.label}</span>
+                    <item.icon className="w-5 h-5 text-foreground/50 group-hover:text-accent transition-colors" />
+                    <span className="text-sm font-bold text-foreground/70 group-hover:text-foreground transition-colors">{item.label}</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-foreground/75 group-hover:text-accent group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-4 h-4 text-foreground/70 group-hover:text-accent group-hover:translate-x-1 transition-all" />
                 </button>
               ))}
             </section>
@@ -136,7 +186,7 @@ export default function ProfilePage() {
             {/* Logout */}
             <button
               onClick={handleLogout}
-              className="w-full p-5 rounded-2xl bg-red-500/5 border border-red-500/10 flex justify-center items-center gap-3 text-red-400 text-sm font-semibold hover:bg-red-500/10 hover:border-red-500/20 transition-all"
+              className="w-full p-5 rounded-2xl bg-red-50 border border-red-200 flex justify-center items-center gap-3 text-red-600 text-sm font-bold hover:bg-red-100/50 transition-all shadow-2xs"
             >
               <LogOut className="w-4 h-4" /> Keluar dari Akun
             </button>
@@ -144,9 +194,9 @@ export default function ProfilePage() {
         )}
       </main>
 
-      <footer className="py-8 pb-32 text-center border-t border-white/10 mt-auto">
-        <Sparkles className="w-4 h-4 mx-auto mb-3 text-accent/30" />
-        <p className="text-xs text-foreground/70 font-light">E-LAUNDRY • v2.0</p>
+      <footer className="py-8 pb-12 text-center border-t border-peach-border mt-auto bg-peach-light/30">
+        <Shirt className="w-5 h-5 mx-auto mb-2 text-accent/30" />
+        <p className="text-xs text-foreground/60 font-bold tracking-wider">E-LAUNDRY • v2.0</p>
       </footer>
     </div>
   );
