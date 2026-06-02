@@ -102,19 +102,19 @@ export default function Home() {
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-foreground/80">
-              <Link href="#" className="hover:text-accent transition-colors duration-300">Home</Link>
-              <Link href="#about" className="hover:text-accent transition-colors duration-300">About</Link>
-              <Link href="#services" className="hover:text-accent transition-colors duration-300">Service</Link>
-              <Link href="#timeline" className="hover:text-accent transition-colors duration-300">Blog</Link>
+              <Link href="#" className="hover:text-accent transition-colors duration-300">Beranda</Link>
+              <Link href="#about" className="hover:text-accent transition-colors duration-300">Tentang Kami</Link>
+              <Link href="#services" className="hover:text-accent transition-colors duration-300">Layanan</Link>
+              <Link href="#timeline" className="hover:text-accent transition-colors duration-300">Linimasa</Link>
               <Link href="#pricing" className="hover:text-accent transition-colors duration-300 flex items-center gap-1">
-                Cart<span className="text-xs bg-accent/10 text-accent px-1.5 py-0.5 rounded-full font-bold">0</span>
+                Keranjang<span className="text-xs bg-accent/10 text-accent px-1.5 py-0.5 rounded-full font-bold">0</span>
               </Link>
             </div>
 
             {/* CTA Button */}
             <div className="hidden md:flex items-center gap-4">
               <Link href="#contacts" className="btn-primary">
-                Contact With Us
+                Hubungi Kami
               </Link>
             </div>
 
@@ -136,35 +136,35 @@ export default function Home() {
               onClick={() => setMobileMenuOpen(false)}
               className="block font-semibold hover:text-accent transition-colors"
             >
-              Home
+              Beranda
             </Link>
             <Link 
               href="#about" 
               onClick={() => setMobileMenuOpen(false)}
               className="block font-semibold hover:text-accent transition-colors"
             >
-              About
+              Tentang Kami
             </Link>
             <Link 
               href="#services" 
               onClick={() => setMobileMenuOpen(false)}
               className="block font-semibold hover:text-accent transition-colors"
             >
-              Service
+              Layanan
             </Link>
             <Link 
               href="#timeline" 
               onClick={() => setMobileMenuOpen(false)}
               className="block font-semibold hover:text-accent transition-colors"
             >
-              Blog
+              Linimasa
             </Link>
             <Link 
               href="#pricing" 
               onClick={() => setMobileMenuOpen(false)}
               className="block font-semibold hover:text-accent transition-colors"
             >
-              Cart (0)
+              Keranjang (0)
             </Link>
             <div className="pt-2">
               <Link 
@@ -172,7 +172,7 @@ export default function Home() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="btn-primary w-full text-center"
               >
-                Contact With Us
+                Hubungi Kami
               </Link>
             </div>
           </div>
@@ -188,18 +188,18 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-1 gap-12 text-center relative z-10">
           <div className={`max-w-3xl mx-auto ${mounted ? 'animate-slide-up' : 'opacity-0'}`}>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-tight tracking-tight mb-6">
-              Delivering excellence<br />every step ahead
+              Kualitas Perawatan Busana<br />Terbaik di Setiap Langkah
             </h1>
             <p className="text-foreground/75 text-sm sm:text-base font-medium leading-relaxed mb-10 max-w-xl mx-auto">
-              Turpis rutrum tempor leo nisl turpis nisl phasellus elementum elementum.
+              Menghubungkan kenyamanan gaya hidup urban Anda dengan jaringan UMKM laundry kiloan terstandarisasi dan ramah lingkungan.
             </p>
 
             <div className="flex justify-center items-center gap-4 mb-16">
               <Link href="/register" className="btn-primary">
-                Get Started
+                Mulai Sekarang
               </Link>
               <Link href="#contacts" className="btn-outline">
-                Contact with us
+                Hubungi Kami
               </Link>
             </div>
           </div>
@@ -236,7 +236,7 @@ export default function Home() {
                 <Shirt className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-foreground leading-snug">Soft, fresh, and revitalized garments</p>
+                <p className="text-xs font-bold text-foreground leading-snug">Pakaian lembut, harum, dan segar kembali</p>
               </div>
             </div>
 
@@ -246,7 +246,7 @@ export default function Home() {
                 <Shield className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-foreground leading-snug">Colors and textures preserved with care</p>
+                <p className="text-xs font-bold text-foreground leading-snug">Warna dan serat kain terjaga sempurna</p>
               </div>
             </div>
 
@@ -256,7 +256,7 @@ export default function Home() {
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-foreground leading-snug">Expertly dry-cleaned for pristine results</p>
+                <p className="text-xs font-bold text-foreground leading-snug">Pencucian kering profesional higienis</p>
               </div>
             </div>
 
@@ -266,14 +266,14 @@ export default function Home() {
                 <Droplets className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-foreground leading-snug">Delicate fabrics treated with expertise</p>
+                <p className="text-xs font-bold text-foreground leading-snug">Bahan halus dirawat oleh ahlinya</p>
               </div>
             </div>
 
             {/* Bottom Reception Pill */}
             <div className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 bg-white rounded-full py-2.5 px-6 shadow-md border border-peach-border flex items-center gap-2 z-20 shrink-0">
               <Clock className="w-4 h-4 text-accent" />
-              <span className="text-xs font-bold text-foreground whitespace-nowrap">24 Hours Reception is open</span>
+              <span className="text-xs font-bold text-foreground whitespace-nowrap">Layanan Antar Jemput Siap Sedia</span>
             </div>
           </div>
 
@@ -283,25 +283,25 @@ export default function Home() {
               <div className="p-2 rounded-xl bg-peach-dark text-accent shrink-0">
                 <Shirt className="w-4 h-4" />
               </div>
-              <p className="text-xs font-bold text-foreground leading-snug">Soft, fresh, & revitalized garments</p>
+              <p className="text-xs font-bold text-foreground leading-snug">Pakaian lembut, harum, & segar kembali</p>
             </div>
             <div className="bg-white rounded-2xl p-4 shadow-sm border border-peach-border flex flex-col items-center text-center gap-2">
               <div className="p-2 rounded-xl bg-peach-dark text-accent shrink-0">
                 <Sparkles className="w-4 h-4" />
               </div>
-              <p className="text-xs font-bold text-foreground leading-snug">Expertly dry-cleaned for pristine results</p>
+              <p className="text-xs font-bold text-foreground leading-snug">Pencucian kering profesional higienis</p>
             </div>
             <div className="bg-white rounded-2xl p-4 shadow-sm border border-peach-border flex flex-col items-center text-center gap-2">
               <div className="p-2 rounded-xl bg-peach-dark text-accent shrink-0">
                 <Shield className="w-4 h-4" />
               </div>
-              <p className="text-xs font-bold text-foreground leading-snug">Colors & textures preserved with care</p>
+              <p className="text-xs font-bold text-foreground leading-snug">Warna & serat kain terjaga sempurna</p>
             </div>
             <div className="bg-white rounded-2xl p-4 shadow-sm border border-peach-border flex flex-col items-center text-center gap-2">
               <div className="p-2 rounded-xl bg-peach-dark text-accent shrink-0">
                 <Droplets className="w-4 h-4" />
               </div>
-              <p className="text-xs font-bold text-foreground leading-snug">Delicate fabrics treated with expertise</p>
+              <p className="text-xs font-bold text-foreground leading-snug">Bahan halus dirawat oleh ahlinya</p>
             </div>
           </div>
 
@@ -315,11 +315,10 @@ export default function Home() {
           {/* Left Column */}
           <div>
             <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight mb-6">
-              About us beyond your<br />expectations
+              Layanan Binatu yang<br />Melampaui Ekspektasi Anda
             </h2>
             <p className="text-foreground/70 text-sm leading-relaxed mb-10 max-w-lg">
-              Ultrices venenatis diam dolor tortor. Leo tellus nunc hendrerit lacinia odio. 
-              Commodo facilisis enim nunc ut ullamcorper sociis non.
+              Kami hadir untuk mendigitalisasi industri binatu kiloan konvensional, meningkatkan efisiensi waktu harian Anda, serta mendukung pertumbuhan ekonomi jaringan UMKM laundry mitra lokal secara berkelanjutan.
             </p>
 
             {/* Stats badge */}
@@ -329,7 +328,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-lg font-display font-black leading-none text-foreground">800+</p>
-                <p className="text-xs text-foreground/75 font-semibold">Happy Customers per month</p>
+                <p className="text-xs text-foreground/75 font-semibold">Pelanggan Setia per bulan</p>
               </div>
             </div>
           </div>
@@ -378,12 +377,12 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
             <div>
               <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight">
-                Expert laundry services<br />delivered fresh
+                Layanan Binatu Profesional<br />Tersaji Sempurna
               </h2>
             </div>
             <div>
               <Link href="#services" className="btn-primary">
-                Browse All Service
+                Jelajahi Semua Layanan
               </Link>
             </div>
           </div>
@@ -397,9 +396,9 @@ export default function Home() {
               <div className="bg-[#E96A44] w-full aspect-[4/3] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
                 <Shirt className="w-16 h-16 text-white" />
               </div>
-              <h3 className="text-lg font-display font-bold mb-3">Quick Wash</h3>
+              <h3 className="text-lg font-display font-bold mb-3">Cuci Cepat (Quick Wash)</h3>
               <p className="text-foreground/70 text-xs sm:text-sm leading-relaxed">
-                Facilisi senectus vulputate pharetra tempor. Nunc imperdiet pretium pharetra in eget.
+                Pencucian cepat dan bersih menggunakan formula detergen eco-friendly yang menjaga serat pakaian sehari-hari Anda tetap segar.
               </p>
             </div>
 
@@ -414,9 +413,9 @@ export default function Home() {
                   <path d="M16 12h.01" />
                 </svg>
               </div>
-              <h3 className="text-lg font-display font-bold mb-3">Fresh Press</h3>
+              <h3 className="text-lg font-display font-bold mb-3">Setrika Uap (Fresh Press)</h3>
               <p className="text-foreground/70 text-xs sm:text-sm leading-relaxed">
-                Convallis erat aenean risus nisi. Facilisis auctor magna adipiscing id purus.
+                Penyetrikaan uap presisi tinggi untuk menghilangkan kerutan secara instan, menghasilkan lipatan pakaian rapi dan bebas kuman.
               </p>
             </div>
 
@@ -426,9 +425,9 @@ export default function Home() {
               <div className="bg-[#1E70D6] w-full aspect-[4/3] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
                 <Droplets className="w-16 h-16 text-white" />
               </div>
-              <h3 className="text-lg font-display font-bold mb-3">Stain Removal</h3>
+              <h3 className="text-lg font-display font-bold mb-3">Pembersihan Noda (Stain Removal)</h3>
               <p className="text-foreground/70 text-xs sm:text-sm leading-relaxed">
-                Aliquam sem eu id cursus ipsum et. Nisi est cras malesuada sagittis sapien.
+                Penanganan intensif untuk noda membandel pada bahan kain khusus secara hati-hati agar warna kain tetap berkilau dan tidak pudar.
               </p>
             </div>
 
@@ -442,7 +441,7 @@ export default function Home() {
           
           <div className="mb-16">
             <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight">
-              From humble beginnings to<br />excellence
+              Dari Langkah Sederhana<br />Menuju Standar Terbaik
             </h2>
           </div>
 
@@ -466,16 +465,16 @@ export default function Home() {
                 </div>
                 <div className="space-y-2">
                   <span className="text-xs font-bold text-foreground/50">2011</span>
-                  <h4 className="text-lg font-display font-bold">Expansion & Operational Scaling</h4>
+                  <h4 className="text-lg font-display font-bold">Ekspansi & Manajemen Kemitraan</h4>
                   <p className="text-foreground/70 text-xs sm:text-sm leading-relaxed">
-                    Congue omet elit commodo sed consequat. Tortor vitae elementum venenatis egestas. Augue viverra id viverra et eget.
+                    Meluncurkan integrasi platform manajemen pesanan dan POS kasir untuk membantu pertumbuhan mitra UMKM lokal.
                   </p>
                 </div>
               </div>
 
               <div className="pt-4">
                 <Link href="#about" className="btn-primary">
-                  Learn More About Us
+                  Pelajari Selengkapnya Tentang Kami
                 </Link>
               </div>
             </div>
@@ -495,7 +494,7 @@ export default function Home() {
                     />
                   </div>
                   <div>
-                    <h5 className="font-display font-bold text-base">Foundation and Local Launch</h5>
+                    <h5 className="font-display font-bold text-base">Pendirian Outlet Pertama & Pelayanan Lokal</h5>
                   </div>
                 </div>
                 <div className="space-y-3 flex sm:flex-col items-start justify-between sm:justify-start">
@@ -518,14 +517,14 @@ export default function Home() {
                     />
                   </div>
                   <div>
-                    <h5 className="font-display font-bold text-base">Maturity and Service Innovation</h5>
+                    <h5 className="font-display font-bold text-base">Inovasi Layanan & Keanggotaan Berkelanjutan</h5>
                   </div>
                 </div>
                 <div className="space-y-3 flex sm:flex-col items-start justify-between sm:justify-start">
                   <span className="bg-peach-light border border-peach-border text-foreground font-bold px-3 py-1 rounded-full text-xs">
                     2019
                   </span>
-                  <span className="text-sm font-bold text-foreground/45">Present</span>
+                  <span className="text-sm font-bold text-foreground/45">Kini</span>
                 </div>
               </div>
 
@@ -541,7 +540,7 @@ export default function Home() {
           
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight">
-              Our easy process for fresh<br />laundry every time
+              Alur Mudah untuk Pakaian<br />Bersih Sempurna Setiap Saat
             </h2>
           </div>
 
@@ -603,10 +602,10 @@ export default function Home() {
             {/* Content Column */}
             <div className="p-8 sm:p-16 space-y-6 text-white relative z-10 text-left">
               <h3 className="text-3xl sm:text-4xl font-display font-black leading-tight">
-                Make laundry day<br />hassle-free with E-Laundry!
+                Bebaskan Hari Anda dari<br />Beban Cucian Bersama E-Laundry!
               </h3>
               <p className="text-white/80 text-sm leading-relaxed max-w-md font-medium">
-                Delivering fresh clothes right to your door.
+                Kami menjemput pakaian kotor Anda dan mengembalikannya bersih wangi sempurna.
               </p>
             </div>
 
@@ -630,7 +629,7 @@ export default function Home() {
           
           <div className="mb-16">
             <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight">
-              Fresh laundry, happy<br />customers speak volumes
+              Pakaian Bersih, Pelanggan Puas:<br />Kata Mereka Tentang Kami
             </h2>
           </div>
 
@@ -652,11 +651,11 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-foreground/80 font-medium italic text-sm leading-relaxed">
-                "The pick-up service was fast, and the clothes came back smelling fantastic! Best laundry service in town."
+                "Layanan penjemputannya sangat cepat, pakaian dikembalikan dengan kemasan rapi dan wangi eksklusif tahan lama. Jasa laundry terbaik di kota!"
               </p>
               <div>
                 <h4 className="font-display font-bold text-base text-foreground">Robert Chen</h4>
-                <p className="text-xs text-foreground/50 font-bold">Verified Customer</p>
+                <p className="text-xs text-foreground/50 font-bold">Pelanggan Terverifikasi</p>
               </div>
             </div>
 
@@ -847,7 +846,7 @@ export default function Home() {
           <div className="space-y-8">
             <div>
               <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight">
-                Maximize your laundry<br />experience here
+                Optimalkan Pengalaman Perawatan<br />Pakaian Anda Bersama Kami
               </h2>
             </div>
             
@@ -913,29 +912,29 @@ export default function Home() {
 
             {/* Column 2 Services */}
             <div>
-              <h4 className="text-sm font-display font-bold text-foreground mb-6 uppercase tracking-wider">Services</h4>
+              <h4 className="text-sm font-display font-bold text-foreground mb-6 uppercase tracking-wider">Layanan</h4>
               <ul className="space-y-3 text-xs sm:text-sm text-foreground/70">
-                <li><Link href="#services" className="hover:text-accent transition-colors">Quick Wash</Link></li>
-                <li><Link href="#services" className="hover:text-accent transition-colors">Fresh Press / Setrika Uap</Link></li>
-                <li><Link href="#services" className="hover:text-accent transition-colors">Stain Removal / Noda Bandel</Link></li>
+                <li><Link href="#services" className="hover:text-accent transition-colors">Cuci Cepat (Quick Wash)</Link></li>
+                <li><Link href="#services" className="hover:text-accent transition-colors">Setrika Uap (Fresh Press)</Link></li>
+                <li><Link href="#services" className="hover:text-accent transition-colors">Pembersihan Noda</Link></li>
                 <li><Link href="#services" className="hover:text-accent transition-colors">Cuci Kering Eksklusif</Link></li>
               </ul>
             </div>
 
             {/* Column 3 Company */}
             <div>
-              <h4 className="text-sm font-display font-bold text-foreground mb-6 uppercase tracking-wider">Company</h4>
+              <h4 className="text-sm font-display font-bold text-foreground mb-6 uppercase tracking-wider">Perusahaan</h4>
               <ul className="space-y-3 text-xs sm:text-sm text-foreground/70">
-                <li><Link href="#about" className="hover:text-accent transition-colors">About Us</Link></li>
-                <li><Link href="#timeline" className="hover:text-accent transition-colors">Our History</Link></li>
-                <li><Link href="#" className="hover:text-accent transition-colors">Testimonials</Link></li>
-                <li><Link href="#" className="hover:text-accent transition-colors">Careers</Link></li>
+                <li><Link href="#about" className="hover:text-accent transition-colors">Tentang Kami</Link></li>
+                <li><Link href="#timeline" className="hover:text-accent transition-colors">Sejarah Kami</Link></li>
+                <li><Link href="#" className="hover:text-accent transition-colors">Testimoni</Link></li>
+                <li><Link href="#" className="hover:text-accent transition-colors">Karir</Link></li>
               </ul>
             </div>
 
             {/* Column 4 Contact Details */}
             <div>
-              <h4 className="text-sm font-display font-bold text-foreground mb-6 uppercase tracking-wider">Contact Us</h4>
+              <h4 className="text-sm font-display font-bold text-foreground mb-6 uppercase tracking-wider">Hubungi Kami</h4>
               <ul className="space-y-4 text-xs sm:text-sm text-foreground/70">
                 <li className="flex gap-3 items-start">
                   <Phone className="w-4 h-4 text-accent shrink-0 mt-0.5" />
